@@ -23,8 +23,8 @@ spec:
     command:
     - cat
     tty: true
-  - name: nodejs
-    image: node:latest
+  - name: maven
+    image: maven:latest
     command:
     - cat
     tty: true
@@ -57,9 +57,9 @@ spec:
  stages {
         stage('RUN Unit Tests') {
         steps {
-        container('nodejs') {
-          sh "npm install" ;
-          sh "npm test" ;
+        container('maven') {
+          sh "mvn install" ;
+          sh "mvn test" ;
           }
         }
     }
