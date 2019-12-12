@@ -1,4 +1,4 @@
 FROM openjdk:8
-ADD target/docker-spring-boot.jar docker-spring-boot.jar
+ADD java-web-app/target/java-web-app.jar java-web-app.jar
 EXPOSE 80
-ENTRYPOINT ["java", "-jar", "docker-spring-boot.jar" ]
+ENTRYPOINT ["java", "-jar", "java-web-app.jar" ]
