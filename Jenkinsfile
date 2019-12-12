@@ -58,6 +58,7 @@ spec:
         stage('RUN Unit Tests') {
         steps {
         container('maven') {
+          sh "cd java-web-app"
           sh "mvn install" ;
           sh "mvn test" ;
           }
