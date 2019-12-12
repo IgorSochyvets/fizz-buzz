@@ -58,7 +58,7 @@ spec:
         stage('RUN Unit Tests') {
         steps {
         container('maven') {
-          sh "mvn clean install spring-boot:repackage"
+          sh "mvn install"
           sh "mvn test" ;
           }
         }
