@@ -67,11 +67,10 @@ spec:
    steps {
     container ('helm') {
         sh "helm version"
-        sh "helm create app" ;
+        sh "helm create java-web-app-chart" ;
     }
    }
   }
-
 
 
 stage('Create Docker images') {
@@ -80,8 +79,8 @@ stage('Create Docker images') {
          withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
             sh """
               docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-              docker build -t kongurua/hello-app:1 .
-              docker push kongurua/hello-app:1
+              docker build -t kongurua/java-web-app:1 .
+              docker push kongurua/java-web-app:1
                """
           }
         }
