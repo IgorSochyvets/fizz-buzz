@@ -11,7 +11,7 @@ This is CI/CD project realized using Jenkins
   Jenkinsfile
   ```
 ## Architecture
-* Create test Java web (Spring Boot) application "Hello World" (using video guide: https://www.youtube.com/watch?v=FlSup_eelYE):
+* Create test Java web app (Spring Boot) application "Hello World" (using video guide: https://www.youtube.com/watch?v=FlSup_eelYE):
   ``` 
   *.jar
   ```
