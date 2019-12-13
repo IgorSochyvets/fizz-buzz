@@ -19,7 +19,7 @@ This is CI/CD project realized using Jenkins
 * Create docker container with test app
   ``` 
   docker build -f Dockerfile -t kongurua/java-web-app:latest .
-  docker run -p 80:80 kongurua/java-web-app #open http://localhost/rest/docker/hello
+  docker run -p 80:80 kongurua/java-web-app
   docker push kongurua/java-web-app:latest
   ```
 * Create helm chart with with test app
