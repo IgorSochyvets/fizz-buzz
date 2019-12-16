@@ -53,6 +53,28 @@ spec:
 }
 }
 
+/*
+ stages {
+        stage('RUN Unit Tests') {
+        steps {
+        container('maven') {
+          sh "mvn install"
+          sh "mvn test" ;
+          }
+        }
+    }
+
+
+  stage ('Helm create') {
+   steps {
+    container ('helm') {
+        sh "helm version"
+        sh "helm create java-web-app-chart" ;
+    }
+   }
+  }
+*/
+
 
 stage('Create Docker images') {
        when {
@@ -71,3 +93,4 @@ stage('Create Docker images') {
       }
     }
   }
+}
