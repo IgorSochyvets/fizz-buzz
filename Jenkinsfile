@@ -75,7 +75,7 @@ spec:
 
 stage('Create Docker images') {
        when {
-           branch 'master'
+           branch 'development'
        }
        steps{
         container('docker') {
