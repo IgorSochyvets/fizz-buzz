@@ -4,6 +4,7 @@ pipeline {
       DOCKERHUB_IMAGE = 'nginx-test'
       DOCKERHUB_USER = 'kongurua'
       DEV_RELEASE_TAG = 'dev'
+      QA_RELEASE_TAG = 'qa'
   }
 
  agent {
@@ -109,17 +110,16 @@ stage('Create Docker images for QA release') {
        when {
          allOf {
                     branch 'master'
-                    tag '*'
+                    tag "*"
                 }
         }
        steps{
         container('docker') {
          withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-           sh 'echo ${BRANCH_NAME}'
-           sh 'echo ${CHANGE_ID}'
+           sh 'echo ${TAG_NAME}'
            sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
-           sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${DEV_RELEASE_TAG} .'
-           sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${DEV_RELEASE_TAG}'
+           sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${QA_RELEASE_TAG} .'
+           sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${QA_RELEASE_TAG}'
           }
         }
       }
