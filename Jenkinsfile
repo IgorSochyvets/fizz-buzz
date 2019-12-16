@@ -53,7 +53,6 @@ spec:
 }
 }
 
-/*
  stages {
         stage('RUN Unit Tests') {
         steps {
@@ -63,9 +62,9 @@ spec:
           }
         }
     }
-*/
+  }
 
-/*
+
   stage ('Helm create') {
    steps {
     container ('helm') {
@@ -74,7 +73,7 @@ spec:
     }
    }
   }
-*/
+
 
 stage('Create Docker images') {
        when {
@@ -85,12 +84,11 @@ stage('Create Docker images') {
          withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
             sh """
               docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
-              docker build -t kongurua/nginx-test:1 .
-              docker push kongurua/nginx-test:1
+              docker build -t kongurua/java-web-app:1 .
+              docker push kongurua/java-web-app:1
                """
           }
         }
       }
     }
   }
-}
