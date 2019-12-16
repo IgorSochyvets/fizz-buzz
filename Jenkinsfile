@@ -104,7 +104,7 @@ spec:
           }
         }
 
-        stage('Create Docker images') {
+        stage('Create Docker images for PR') {
               when {
                               expression { BRANCH_NAME =~ 'PR-*' }
               }
