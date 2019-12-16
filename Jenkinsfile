@@ -1,5 +1,10 @@
 pipeline {
 
+  environment {
+      DOCKERHUB_IMAGE = 'nginx-test'
+      DOCKERHUB_USER = 'kongurua'
+  }
+
  agent {
     kubernetes {
       yaml """
@@ -92,8 +97,8 @@ spec:
                sh 'echo ${BRANCH_NAME}'
                sh 'echo ${CHANGE_ID}'
                sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
-               sh  'docker build -t kongurua/nginx-test:${BRANCH_NAME} .'
-               sh  'docker push kongurua/nginx-test:${BRANCH_NAME}'
+               sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
+               sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
               }
             }
           }
