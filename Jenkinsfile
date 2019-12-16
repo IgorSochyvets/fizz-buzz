@@ -60,6 +60,8 @@ spec:
 
  stages {
 
+
+// do next stage after every commit to every branch;
 /*
         stage('RUN Unit Tests') {
         steps {
@@ -69,24 +71,21 @@ spec:
           }
         }
     }
-
-
-
-  stage ('Helm create') {
-   steps {
-    container ('helm') {
-        sh "helm version"
-        sh "helm create java-web-app-chart" ;
-    }
-   }
-  }
 */
 
 
+
+// Every commit to master branch is a dev release
+// Every git tag on a master branch is a QA release
+// Production release controlled by a change to production-release.txt file in application repository root, containing a git tag that should be released to production environment
+
+
+// next stage works after commit to every branch
     stage('Create Docker images') {
            when {
                 anyOf {
                     branch 'development'
+                    branch 'feature-1'
                     branch 'master'
                     environment name: 'DEPLOY_TO', value: 'production'
                 }
@@ -104,6 +103,8 @@ spec:
           }
         }
 
+
+// next stage works after PR  
         stage('Create Docker images for PR') {
               when {
                               expression { BRANCH_NAME =~ 'PR-*' }
@@ -112,11 +113,10 @@ spec:
                 container('docker') {
                  withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
                    sh 'echo ${BRANCH_NAME}'
-                   sh 'echo "#################################################################"'
                    sh 'echo ${CHANGE_ID}'
                    sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
-                   sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
-                   sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
+                   sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${CHANGE_ID} .'
+                   sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${CHANGE_ID}'
                   }
                 }
               }
@@ -141,6 +141,26 @@ stage('Create Docker images') {
       }
     }
     */
+
+
+// do next stage after pushin docker image and before deployment
+    /*
+      stage ('Helm create') {
+       steps {
+        container ('helm') {
+            sh "helm version"
+            sh "helm create java-web-app-chart" ;
+        }
+       }
+      }
+    */
+
+
+// Deployment stage
+
+
+
+
 
   }
   post {
