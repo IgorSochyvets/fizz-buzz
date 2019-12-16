@@ -107,9 +107,7 @@ spec:
 
 // Every git tag on a master branch is a QA release
 stage('Create Docker images for QA release') {
-       when {
-           tag "*"
-        }
+     when { tag "release-*" }
        steps{
         container('docker') {
          withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
