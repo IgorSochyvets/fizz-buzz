@@ -54,6 +54,7 @@ spec:
 }
 
  stages {
+
         stage('RUN Unit Tests') {
         steps {
         container('maven') {
@@ -62,7 +63,7 @@ spec:
           }
         }
     }
-  }
+
 
 
   stage ('Helm create') {
@@ -92,3 +93,4 @@ stage('Create Docker images') {
       }
     }
   }
+}
