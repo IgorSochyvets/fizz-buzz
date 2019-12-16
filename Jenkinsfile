@@ -77,21 +77,6 @@ spec:
   }
 */
 
-stage('Test Names') {
-       when {
-           branch 'development'
-       }
-       steps{
-        container('docker') {
-
-
-            sh 'echo ${BRANCH_NAME}'
-            sh 'echo ${CHANGE_ID}'
-
-        }
-      }
-    }
-
 
     stage('Create Docker images') {
            when {
@@ -100,9 +85,11 @@ stage('Test Names') {
            steps{
             container('docker') {
              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-                sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
-                sh  'docker build -t kongurua/nginx-test:1 .'
-                sh  'docker push kongurua/nginx-test:1'
+               sh 'echo ${BRANCH_NAME}'
+               sh 'echo ${CHANGE_ID}'
+               sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
+               sh  'docker build -t kongurua/nginx-test:1 .'
+               sh  'docker push kongurua/nginx-test:1'
               }
             }
           }
