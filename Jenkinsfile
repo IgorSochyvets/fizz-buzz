@@ -63,14 +63,15 @@ spec:
           }
         }
     }
-  stage ('Helm create') {
-   steps {
-    container ('helm') {
-        sh "helm version"
-        sh "helm create java-web-app-chart" ;
-    }
-   }
-  }
+
+#  stage ('Helm create') {
+#   steps {
+#    container ('helm') {
+#        sh "helm version"
+#        sh "helm create java-web-app-chart" ;
+#    }
+#   }
+#  }
 
 
 stage('Create Docker images') {
