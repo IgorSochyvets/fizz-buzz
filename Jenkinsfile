@@ -85,7 +85,7 @@ spec:
 
     stage('Create Docker images') {
            when {
-                allOf {
+                anyOf {
                     branch 'development'
                     branch 'master'
                     environment name: 'DEPLOY_TO', value: 'production'
