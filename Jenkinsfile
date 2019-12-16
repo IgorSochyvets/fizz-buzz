@@ -87,7 +87,7 @@ stage('Create Docker images') {
             sh """
               echo "############################"
               echo ${CHANGE_ID}
-              eche ${BRANCH_NAME}
+              echo ${BRANCH_NAME}
               docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
               docker build -t kongurua/nginx-test:1 .
               docker push kongurua/nginx-test:1
