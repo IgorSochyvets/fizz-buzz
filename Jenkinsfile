@@ -107,6 +107,7 @@ spec:
 
 
 // Every git tag on a master branch is a QA release
+//
 stage('Create Docker images for QA release') {
      when {
          tag "release-*"
