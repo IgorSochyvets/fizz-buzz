@@ -74,6 +74,9 @@ spec:
 
 
 stage('Create Docker images') {
+       when {
+           branch 'master'
+       }
        steps{
         container('docker') {
          withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
@@ -88,3 +91,7 @@ stage('Create Docker images') {
     }
   }
 }
+
+when {
+                branch 'master'
+            }
