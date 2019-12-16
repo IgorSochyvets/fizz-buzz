@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bf0da1a1-e7b6-49eb-80b4-2eec0a4baa45" name="Default Changelist" comment="" />
+    <list default="true" id="bf0da1a1-e7b6-49eb-80b4-2eec0a4baa45" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Jenkinsfile" beforeDir="false" afterPath="$PROJECT_DIR$/Jenkinsfile" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -63,6 +65,7 @@
       <workItem from="1576235254898" duration="223000" />
       <workItem from="1576235767486" duration="231000" />
       <workItem from="1576493953086" duration="137000" />
+      <workItem from="1576503093447" duration="216000" />
     </task>
     <servers />
   </component>
