@@ -93,6 +93,22 @@ stage('Test Names') {
     }
 
 
+    stage('Create Docker images') {
+           when {
+               branch 'development'
+           }
+           steps{
+            container('docker') {
+             withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+                sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
+                sh  'docker build -t kongurua/nginx-test:1 .'
+                sh  'docker push kongurua/nginx-test:1'
+              }
+            }
+          }
+        }
+
+
 
 /*
 stage('Create Docker images') {
