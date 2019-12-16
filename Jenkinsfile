@@ -86,6 +86,7 @@ stage('Test Names') {
 
 
             sh 'echo ${BRANCH_NAME}'
+            sh 'echo ${CHANGE_ID}'
 
         }
       }
