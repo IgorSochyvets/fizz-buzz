@@ -88,8 +88,8 @@ spec:
                sh 'echo ${BRANCH_NAME}'
                sh 'echo ${CHANGE_ID}'
                sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
-               sh  'docker build -t kongurua/nginx-test:1 .'
-               sh  'docker push kongurua/nginx-test:1'
+               sh  'docker build -t kongurua/nginx-test:${BRANCH_NAME} .'
+               sh  'docker push kongurua/nginx-test:${BRANCH_NAME}'
               }
             }
           }
