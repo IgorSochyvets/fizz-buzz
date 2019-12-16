@@ -85,6 +85,9 @@ stage('Create Docker images') {
         container('docker') {
          withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
             sh """
+              echo "############################"
+              echo ${CHANGE_ID}
+              eche ${BRANCH_NAME}
               docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}
               docker build -t kongurua/nginx-test:1 .
               docker push kongurua/nginx-test:1
