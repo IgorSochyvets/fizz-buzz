@@ -80,8 +80,12 @@ spec:
 
     stage('Create Docker images') {
            when {
-               branch 'development'
-           }
+                allOf {
+                    branch 'production'
+                    branch 'master'
+                    environment name: 'DEPLOY_TO', value: 'production'
+                }
+            }
            steps{
             container('docker') {
              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
@@ -115,7 +119,7 @@ stage('Create Docker images') {
       }
     }
     */
-  
+
   }
   post {
       always {
