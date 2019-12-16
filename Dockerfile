@@ -1,4 +1,2 @@
-FROM openjdk:8
-ADD target/java-web-app.jar java-web-app.jar
+FROM nginx
 EXPOSE 80
-ENTRYPOINT ["java", "-jar", "java-web-app.jar" ]
