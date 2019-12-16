@@ -71,4 +71,3 @@ stage('Create Docker images') {
       }
     }
   }
-}
