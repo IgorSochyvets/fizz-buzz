@@ -76,14 +76,14 @@ spec:
 */
 
 
+
+
+
+
+
+
+
 // dev
-// QA
-// prod
-// PR
-// branch
-
-
-
 // Every commit to master branch is a dev release
     stage('Create Docker images for DEV release') {
            when {
@@ -104,7 +104,7 @@ spec:
         }
 
 
-
+// QA
 // Every git tag on a master branch is a QA release
         stage('Create Docker images for QA release') {
           when { not
@@ -134,14 +134,14 @@ spec:
 
 
 
-
+// prod
 // Production release controlled by a change to production-release.txt file in application repository root, containing a git tag that should be released to production environment
 
 // use ChangeSets
 
 
 
-
+// branch
 // Every branch that is not also a PR should have build, test, docker image build, docker image push steps with docker image tag = branch name
 // next stage works after commit to every branch
     stage('Create Docker images for Branches') {
@@ -165,6 +165,8 @@ spec:
         }
 
 
+
+// PR
 // Every PR should have build, test, docker image build, docker image push steps with docker tag = pr-number
 // next stage works after PR
         stage('Create Docker images for PR') {
