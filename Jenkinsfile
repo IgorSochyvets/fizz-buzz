@@ -75,6 +75,8 @@ spec:
     }
 */
 
+// test comment; ignore it
+
 
 // dev
 // Every commit to master branch is a dev release
@@ -85,6 +87,7 @@ spec:
            steps{
             container('docker') {
              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+               sh  'echo ${TAG_NAME}'
                sh  'echo ${TAG_NAME}'
                sh 'echo ${BRANCH_NAME}'
                sh 'echo ${CHANGE_ID}'
