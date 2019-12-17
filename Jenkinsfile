@@ -5,6 +5,7 @@ pipeline {
       DOCKERHUB_USER = 'kongurua'
       DEV_RELEASE_TAG = 'dev'
       QA_RELEASE_TAG = 'qa'
+      PROD_RELEASE_TAG = 'prod'
   }
 
  agent {
@@ -130,7 +131,30 @@ spec:
 // prod
 // Production release controlled by a change to production-release.txt file in application repository root, containing a git tag that should be released to production environment
 
-// use ChangeSets
+when {
+  changeset "branchA/folder1/**"
+}
+stage('Create Docker images for PROD release') {
+  when {
+       allOf {
+           changeset "master/production-release.txt"
+           branch 'master'
+       }
+ }
+       steps{
+        container('docker') {
+         withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+           sh  'echo ${TAG_NAME}'
+           sh  'echo ${BRANCH_NAME}'
+           sh  'echo ${CHANGE_ID}'
+           sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
+           sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${PROD_RELEASE_TAG} .'
+           sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${PROD_RELEASE_TAG}'
+          }
+        }
+      }
+    }
+
 
 
 // branch
