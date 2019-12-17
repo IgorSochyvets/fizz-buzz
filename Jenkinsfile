@@ -110,9 +110,10 @@ spec:
           when { not
            {
                anyOf {
+                    // Put here ALL branches!!!
                    branch 'development'
                    branch 'feature-1'
-                   branch 'feature-2'
+                   branch 'feature-*'
                    branch 'master'
                }
            }
@@ -124,8 +125,8 @@ spec:
                    sh 'echo ${BRANCH_NAME}'
                    sh 'echo ${CHANGE_ID}'
                    sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
-                   sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
-                   sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
+                   sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${TAG_NAME} .'
+                   sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${TAG_NAME}'
                   }
                 }
               }
@@ -164,9 +165,10 @@ stage('Create Docker images for QA release') {
     stage('Create Docker images for Branches') {
            when {
                 anyOf {
+                    // Put here ALL branches!!! without "master"
                     branch 'development'
                     branch 'feature-1'
-                    branch 'feature-2'
+                    branch 'feature-*'
                     environment name: 'DEPLOY_TO', value: 'production'
                 }
             }
