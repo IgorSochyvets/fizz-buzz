@@ -137,6 +137,7 @@ stage('Create Docker images for QA release') {
                 anyOf {
                     branch 'development'
                     branch 'feature-1'
+                    branch 'feature-2'
                     environment name: 'DEPLOY_TO', value: 'production'
                 }
             }
