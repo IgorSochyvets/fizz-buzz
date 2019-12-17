@@ -131,9 +131,6 @@ spec:
 // prod
 // Production release controlled by a change to production-release.txt file in application repository root, containing a git tag that should be released to production environment
 
-when {
-  changeset "branchA/folder1/**"
-}
 stage('Create Docker images for PROD release') {
   when {
        allOf {
