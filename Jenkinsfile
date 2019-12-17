@@ -129,7 +129,7 @@ spec:
 stage('Create Docker images for PROD release') {
   when {
        allOf {
-           changeset "master/production-release.txt"
+           changeset "production-release.txt"
            branch 'master'
        }
  }
@@ -156,7 +156,6 @@ stage('Create Docker images for PROD release') {
                     // Put here ALL branches!!! without "master"
                     branch 'development'
                     branch 'feature-*'
-                    environment name: 'DEPLOY_TO', value: 'production'
                 }
             }
            steps{
