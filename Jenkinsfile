@@ -107,6 +107,7 @@ spec:
                    branch 'development'
                    branch 'feature-*'
                    branch 'master'
+                   branch 'PR-*'
                }
            }
          }
