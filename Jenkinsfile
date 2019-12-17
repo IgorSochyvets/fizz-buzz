@@ -76,13 +76,6 @@ spec:
 */
 
 
-
-
-
-
-
-
-
 // dev
 // Every commit to master branch is a dev release
     stage('Create Docker images for DEV release') {
@@ -132,13 +125,10 @@ spec:
             }
 
 
-
-
 // prod
 // Production release controlled by a change to production-release.txt file in application repository root, containing a git tag that should be released to production environment
 
 // use ChangeSets
-
 
 
 // branch
@@ -165,7 +155,6 @@ spec:
         }
 
 
-
 // PR
 // Every PR should have build, test, docker image build, docker image push steps with docker tag = pr-number
 // next stage works after PR
@@ -185,7 +174,6 @@ spec:
             }
 
 
-
 // do next stage after pushin docker image and before deployment
     /*
       stage ('Helm create') {
@@ -200,7 +188,6 @@ spec:
 
 
 // Deployment stage
-
 
   }
   post {
