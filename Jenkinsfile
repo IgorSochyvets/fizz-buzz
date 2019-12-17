@@ -85,6 +85,7 @@ spec:
            steps{
             container('docker') {
              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+               sh 'echo ${changeSets}'
                sh  'echo ${TAG_NAME}'
                sh 'echo ${BRANCH_NAME}'
                sh 'echo ${CHANGE_ID}'
