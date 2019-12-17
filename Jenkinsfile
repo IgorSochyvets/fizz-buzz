@@ -86,10 +86,7 @@ spec:
            steps{
             container('docker') {
              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-               sh 'echo ${changeSets}'
-               sh  'echo ${TAG_NAME}'
-               sh 'echo ${BRANCH_NAME}'
-               sh 'echo ${CHANGE_ID}'
+               sh  'echo "Create Docker images for DEV release"'
                sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
                sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${DEV_RELEASE_TAG} .'
                sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${DEV_RELEASE_TAG}'
