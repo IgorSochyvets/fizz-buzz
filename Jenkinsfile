@@ -5,6 +5,7 @@ pipeline {
       DOCKERHUB_USER = 'kongurua'
       DEV_RELEASE_TAG = 'dev'
       QA_RELEASE_TAG = 'qa'
+      PROD_RELEASE_TAG = 'prod'
   }
 
  agent {
@@ -91,9 +92,10 @@ spec:
                sh  'echo ${TAG_NAME}'
                sh 'echo ${BRANCH_NAME}'
                sh 'echo ${CHANGE_ID}'
+               sh  'echo "Create Docker images for DEV release"'
                sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
-               sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${DEV_RELEASE_TAG} .'
-               sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${DEV_RELEASE_TAG}'
+               sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
+               sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
               }
             }
           }
@@ -117,12 +119,10 @@ spec:
                steps{
                 container('docker') {
                  withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-                   sh  'echo ${TAG_NAME}'
-                   sh 'echo ${BRANCH_NAME}'
-                   sh 'echo ${CHANGE_ID}'
+                   sh  'echo "Create Docker images for QA release"'
                    sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
-                   sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${TAG_NAME} .'
-                   sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${TAG_NAME}'
+                   sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
+                   sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
                   }
                 }
               }
@@ -132,7 +132,26 @@ spec:
 // prod
 // Production release controlled by a change to production-release.txt file in application repository root, containing a git tag that should be released to production environment
 
-// use ChangeSets
+stage('Create Docker images for PROD release') {
+  when {
+       allOf {
+           changeset "production-release.txt"
+           branch 'master'
+       }
+ }
+       steps{
+        container('docker') {
+         withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+           sh  'PROD_RELEASE_TAG1=`cat production-release.txt`'
+           sh  'echo "Create Docker images for PROD release"'
+           sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
+           sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:`cat production-release.txt` .'
+           sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:`cat production-release.txt`'
+          }
+        }
+      }
+    }
+
 
 
 // branch
@@ -144,12 +163,12 @@ spec:
                     // Put here ALL branches!!! without "master"
                     branch 'development'
                     branch 'feature-*'
-                    environment name: 'DEPLOY_TO', value: 'production'
                 }
             }
            steps{
             container('docker') {
              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+               sh  'echo "Create Docker images for Branch release"'
                sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
                sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
                sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
@@ -169,6 +188,7 @@ spec:
                steps{
                 container('docker') {
                  withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+                   sh  'echo "Create Docker images for PR release"'
                    sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
                    sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
                    sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
