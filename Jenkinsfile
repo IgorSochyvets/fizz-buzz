@@ -112,7 +112,6 @@ spec:
                anyOf {
                     // Put here ALL branches!!!
                    branch 'development'
-                   branch 'feature-1'
                    branch 'feature-*'
                    branch 'master'
                }
@@ -135,39 +134,21 @@ spec:
 
 
 
-// Every git tag on a master branch is a QA release
-//
-//
-/*
-stage('Create Docker images for QA release') {
-     when {
-         tag "release-*"
-      }
-       steps{
-        container('docker') {
-         withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-           sh  'echo ${TAG_NAME}'
-           sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
-           sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${QA_RELEASE_TAG} .'
-           sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${QA_RELEASE_TAG}'
-          }
-        }
-      }
-    }
-*/
-
-
 
 // Production release controlled by a change to production-release.txt file in application repository root, containing a git tag that should be released to production environment
 
+// use ChangeSets
 
+
+
+
+// Every branch that is not also a PR should have build, test, docker image build, docker image push steps with docker image tag = branch name
 // next stage works after commit to every branch
     stage('Create Docker images for Branches') {
            when {
                 anyOf {
                     // Put here ALL branches!!! without "master"
                     branch 'development'
-                    branch 'feature-1'
                     branch 'feature-*'
                     environment name: 'DEPLOY_TO', value: 'production'
                 }
@@ -184,6 +165,7 @@ stage('Create Docker images for QA release') {
         }
 
 
+// Every PR should have build, test, docker image build, docker image push steps with docker tag = pr-number
 // next stage works after PR
         stage('Create Docker images for PR') {
               when {
