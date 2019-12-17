@@ -86,7 +86,9 @@ spec:
            steps{
             container('docker') {
              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+               sh  'echo "==="'
                sh  'echo "Create Docker images for DEV release"'
+               sh  'echo "==="'
                sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
                sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${DEV_RELEASE_TAG} .'
                sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${DEV_RELEASE_TAG}'
@@ -113,9 +115,9 @@ spec:
                steps{
                 container('docker') {
                  withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-                   sh  'echo ${TAG_NAME}'
-                   sh 'echo ${BRANCH_NAME}'
-                   sh 'echo ${CHANGE_ID}'
+                   sh  'echo "==="'
+                   sh  'echo "Create Docker images for QA release"'
+                   sh  'echo "==="'
                    sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
                    sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${TAG_NAME} .'
                    sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${TAG_NAME}'
@@ -138,9 +140,9 @@ stage('Create Docker images for PROD release') {
        steps{
         container('docker') {
          withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-           sh  'echo ${TAG_NAME}'
-           sh  'echo ${BRANCH_NAME}'
-           sh  'echo ${CHANGE_ID}'
+           sh  'echo "==="'
+           sh  'echo "Create Docker images for PROD release"'
+           sh  'echo "==="'
            sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
            sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${PROD_RELEASE_TAG} .'
            sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${PROD_RELEASE_TAG}'
@@ -166,6 +168,9 @@ stage('Create Docker images for PROD release') {
            steps{
             container('docker') {
              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+               sh  'echo "==="'
+               sh  'echo "Create Docker images for Branch release"'
+               sh  'echo "==="'
                sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
                sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
                sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
@@ -185,6 +190,9 @@ stage('Create Docker images for PROD release') {
                steps{
                 container('docker') {
                  withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+                   sh  'echo "==="'
+                   sh  'echo "Create Docker images for PR release"'
+                   sh  'echo "==="'
                    sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
                    sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
                    sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
