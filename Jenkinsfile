@@ -137,7 +137,7 @@ stage('Create Docker images for PROD release') {
         container('docker') {
          withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
            sh  'PROD_RELEASE_TAG1=`cat production-release.txt`'
-           PROD_RELEASE_TAG="${sh(script:'cat production-release.txt',returnStdout: true)}"
+           sh  'PROD_RELEASE_TAG="${sh(script:'cat production-release.txt',returnStdout: true)}"'
            sh  'echo "Create Docker images for PROD release"'
            sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
            sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:`cat production-release.txt` .'
