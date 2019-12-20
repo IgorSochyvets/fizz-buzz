@@ -211,8 +211,10 @@ stage('Create Docker images for PROD release') {
           stage ('Test Kubeconfig') {
            steps {
             container ('kubectl') {
-                sh 'echo "Test Kubeconfig"'
-                sh 'kubectl get ns'
+                withKubeConfig([credentialsId: 'kubeconfig']) {
+                  sh 'echo "Test Kubeconfig"'
+                  sh 'kubectl get ns'
+                }
             }
            }
           }
