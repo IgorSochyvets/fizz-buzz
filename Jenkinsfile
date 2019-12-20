@@ -199,7 +199,7 @@ stage('Create Docker images for PROD release') {
        steps {
         container ('helm') {
             sh "helm version"
-            sh "helm create java-web-app-chart" ;
+            sh "helm create java-web-app-chart" 
         }
        }
       }
@@ -211,8 +211,8 @@ stage('Create Docker images for PROD release') {
           stage ('Test Kubeconfig') {
            steps {
             container ('kubectl') {
-                sh "Test Kubeconfig"
-                sh "kubectl get ns" ;
+                sh 'Test Kubeconfig'
+                sh 'kubectl get ns'
             }
            }
           }
