@@ -2,12 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bf0da1a1-e7b6-49eb-80b4-2eec0a4baa45" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Jenkinsfile" beforeDir="false" afterPath="$PROJECT_DIR$/Jenkinsfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="package.json" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -30,6 +37,7 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="RunManager">
     <configuration name="JavaWebAppApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
@@ -66,6 +74,8 @@
       <workItem from="1576235767486" duration="231000" />
       <workItem from="1576493953086" duration="137000" />
       <workItem from="1576503093447" duration="216000" />
+      <workItem from="1576745995902" duration="1803000" />
+      <workItem from="1576749112247" duration="3969000" />
     </task>
     <servers />
   </component>
@@ -73,21 +83,21 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="800" height="271" key="GridCell.Tab.0.bottom" timestamp="1576235861837">
+    <state width="1878" height="350" key="GridCell.Tab.0.bottom" timestamp="1576770934543">
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
-    <state width="800" height="271" key="GridCell.Tab.0.bottom/0.23.1920.1057@0.23.1920.1057" timestamp="1576235861837" />
-    <state width="800" height="271" key="GridCell.Tab.0.center" timestamp="1576235861836">
+    <state width="1878" height="350" key="GridCell.Tab.0.bottom/0.23.1920.1057@0.23.1920.1057" timestamp="1576770934543" />
+    <state width="1878" height="350" key="GridCell.Tab.0.center" timestamp="1576770934530">
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
-    <state width="800" height="271" key="GridCell.Tab.0.center/0.23.1920.1057@0.23.1920.1057" timestamp="1576235861836" />
-    <state width="800" height="271" key="GridCell.Tab.0.left" timestamp="1576235861835">
+    <state width="1878" height="350" key="GridCell.Tab.0.center/0.23.1920.1057@0.23.1920.1057" timestamp="1576770934530" />
+    <state width="1878" height="350" key="GridCell.Tab.0.left" timestamp="1576770934529">
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
-    <state width="800" height="271" key="GridCell.Tab.0.left/0.23.1920.1057@0.23.1920.1057" timestamp="1576235861835" />
-    <state width="800" height="271" key="GridCell.Tab.0.right" timestamp="1576235861837">
+    <state width="1878" height="350" key="GridCell.Tab.0.left/0.23.1920.1057@0.23.1920.1057" timestamp="1576770934529" />
+    <state width="1878" height="350" key="GridCell.Tab.0.right" timestamp="1576770934530">
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
-    <state width="800" height="271" key="GridCell.Tab.0.right/0.23.1920.1057@0.23.1920.1057" timestamp="1576235861837" />
+    <state width="1878" height="350" key="GridCell.Tab.0.right/0.23.1920.1057@0.23.1920.1057" timestamp="1576770934530" />
   </component>
 </project>
