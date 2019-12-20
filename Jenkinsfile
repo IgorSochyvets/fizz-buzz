@@ -206,6 +206,17 @@ stage('Create Docker images for PROD release') {
     */
 
 
+    // Test Kubeconfig
+
+          stage ('Test Kubeconfig') {
+           steps {
+            container ('kubectl') {
+                sh "Test Kubeconfig"
+                sh "kubectl get ns" ;
+            }
+           }
+          }
+
 // Deployment stage
 
   }
