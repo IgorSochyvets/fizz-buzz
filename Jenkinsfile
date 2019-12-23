@@ -70,26 +70,23 @@ spec:
         checkout scm
       }
 
+/* working / tested
       stage('Unit Tests') {
         container('maven') {
           sh "mvn test" ;
           }
         }
+*/
+
+        stage('Building Application') {
+          container('maven') {
+            sh "mvn install" ;
+            }
+          }
 
     } // node
 
 
-
-
-    /*
-            stage('Building Application') {
-            steps {
-            container('maven') {
-              sh "mvn install"
-              }
-            }
-        }
-    */
 
 
   } //podTemplate
