@@ -6,7 +6,7 @@
 //def hardcoded_param = "FOOBAR"
 //def resolver = build.buildVariableResolver
 //def hardcoded_param_value = resolver.resolve(hardcoded_param)
-
+env.DB_URL="hello"
 
 /*
 pipeline {
@@ -74,19 +74,19 @@ spec:
 
     node(label) {
 
-/*
+
       stage('Checkout SCM') {
         checkout scm
       }
-*/
+
 
 /* working / tested
-*/
       stage('Unit Tests') {
         container('maven') {
           sh "mvn test" ;
           }
         }
+*/
 
 /* working / tested
         stage('Building Application') {
@@ -96,7 +96,7 @@ spec:
           }
 */
 
-/*
+
 // dev
 // Every commit to master branch is a dev release
     stage('Create Docker images for DEV release') {
@@ -106,6 +106,7 @@ spec:
 //           steps{
             container('docker') {
              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+               sh 'echo "${env.DB_URL}"'
 //               sh  'println "param ${hardcoded_param} value : ${hardcoded_param_value}"'
                sh  'echo "Create Docker images for DEV release"'
                sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
@@ -115,7 +116,7 @@ spec:
             }
 //          }
         }
-*/
+
 
 
 
