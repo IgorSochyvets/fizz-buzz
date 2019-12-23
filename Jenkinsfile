@@ -91,11 +91,17 @@ spec:
 /* working / tested
         stage('Building Application') {
           container('maven') {
-            sh "mvn install" ;
+            sh "mvn install"
             }
           }
 */
 
+stage('Building Application') {
+  container('maven') {
+    sh 'echo "Test ENV VAR !!!"'
+    sh 'echo "${env.DB_URL}"'
+    }
+  }
 
 // dev
 // Every commit to master branch is a dev release
@@ -106,7 +112,6 @@ spec:
 //           steps{
             container('docker') {
              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-               sh 'echo "${env.DB_URL}"'
 //               sh  'println "param ${hardcoded_param} value : ${hardcoded_param_value}"'
                sh  'echo "Create Docker images for DEV release"'
                sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
