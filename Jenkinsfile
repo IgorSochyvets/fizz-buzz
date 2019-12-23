@@ -84,31 +84,27 @@ spec:
           }
 */
 
-stage('Building Application') {
-  container('maven') {
-    sh 'echo "Test ENV VAR !!!"'
-    sh 'echo "${DOCKERHUB_IMAGE}"'
-    sh 'echo "Test ENV VAR END!!!"'
-    }
-  }
 
-// dev
-// Every commit to master branch is a dev release
-    stage('Create Docker images for DEV release') {
-//         when {
-//                branch 'master'
-//            }
-//           steps{
+
+
+// Docker Image Building
+        // Environment variables DOCKERHUB_USER, DOCKERHUB_IMAGE
+        // var info from Jenkins plugins:
+        // BRANCH_NAME = master  - master branch
+        // BRANCH_NAME = PR-1    - pull request
+        // BRANCH_NAME = develop - other branch
+        // BRANCH_NAME = v0.0.1  - git tag
+        //
+    stage('Creating Docker Image') {
             container('docker') {
              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-//               sh  'println "param ${hardcoded_param} value : ${hardcoded_param_value}"'
-               sh  'echo "Create Docker images for DEV release"'
+               sh  'echo "Create Docker image: ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}"'
                sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
                sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
+// next stem for test purpose/ TMP
                sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
               }
             }
-//          }
         }
 
 
