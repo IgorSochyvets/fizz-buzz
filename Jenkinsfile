@@ -73,10 +73,26 @@ spec:
     } // node
 
 
+      stage('Unit Tests') {
+        container('maven') {
+          sh "mvn test" ;
+          }
+        }
+
+    /*
+            stage('Building Application') {
+            steps {
+            container('maven') {
+              sh "mvn install"
+              }
+            }
+        }
+    */
+
 
   } //podTemplate
 
-  
+
 
 // stages {
 
