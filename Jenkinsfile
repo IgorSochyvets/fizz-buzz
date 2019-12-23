@@ -1,3 +1,6 @@
+#!/usr/bin/env groovy
+
+/*
 pipeline {
 
   environment {
@@ -7,10 +10,11 @@ pipeline {
       QA_RELEASE_TAG = 'qa'
       PROD_RELEASE_TAG = 'prod'
   }
+  */
 
- agent {
-    kubernetes {
-      yaml """
+def label = "jenkins-agent"
+
+podTemplate(label: label, yaml: """
 apiVersion: v1
 kind: Pod
 metadata:
@@ -58,8 +62,9 @@ spec:
     - cat
     tty: true
 """
-}
-}
+  )
+
+  
 
  stages {
 
@@ -228,3 +233,5 @@ stage('Create Docker images for PROD release') {
       }
   }
 }
+
+*/
