@@ -1,4 +1,3 @@
-#!/usr/bin/env groovy
 
 /*
 pipeline {
@@ -10,11 +9,10 @@ pipeline {
       QA_RELEASE_TAG = 'qa'
       PROD_RELEASE_TAG = 'prod'
   }
-  */
 
-def label = "jenkins-agent"
-
-podTemplate(label: label, yaml: """
+ agent {
+    kubernetes {
+      yaml """
 apiVersion: v1
 kind: Pod
 metadata:
@@ -62,23 +60,10 @@ spec:
     - cat
     tty: true
 """
-  ){
+}
+}
 
-    node(label) {
-
-      stage('Checkout SCM') {
-        checkout scm
-      }
-
-    } // node
-
-
-
-  } //podTemplate
-
-  
-
-// stages {
+ stages {
 
 
 // do next stage after every commit to every branch;
@@ -91,7 +76,7 @@ spec:
           }
         }
     }
-
+*/
 
 
 // dev
@@ -220,7 +205,7 @@ stage('Create Docker images for PROD release') {
         }
        }
       }
-
+    */
 
 
     // Test Kubeconfig
