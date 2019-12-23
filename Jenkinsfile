@@ -74,17 +74,20 @@ spec:
 
     node(label) {
 
+/*
       stage('Checkout SCM') {
         checkout scm
       }
+*/
 
 /* working / tested
+*/
       stage('Unit Tests') {
         container('maven') {
           sh "mvn test" ;
           }
         }
-*/
+
 /* working / tested
         stage('Building Application') {
           container('maven') {
@@ -93,7 +96,7 @@ spec:
           }
 */
 
-
+/*
 // dev
 // Every commit to master branch is a dev release
     stage('Create Docker images for DEV release') {
@@ -112,7 +115,7 @@ spec:
             }
 //          }
         }
-
+*/
 
 
 
