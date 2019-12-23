@@ -1,0 +1,41 @@
+# List of installed Jenkins plugins for this project (some of them is not necessary)
+
+
+2	- which plugins to use in Jenkins;	- green balls;
+- Maven Integration;
+- kubernetes continuous deploy;
+- deploy to container
+- kubernetes cli
+- Git Tag Message
+- parameterized trigger plugin (send parameters to downstream job)
+- copy artefacts plugin;
+- promoted builds;
+- publish over ssh
+- GitHub Branch Source
+- Basic Branch Build Strategies(for tag auto build)
+
+
+
+### what are installed
+Ant Plugin
+bouncycastle API
+ChuckNorris Plugin
+Command Agent Launcher
+Deploy to container Plugin
+External Monitor Job Type
+Git Parameter Plug-In
+Git Tag Message Plugin
+GitHub Branch Source Plugin
+GitHub Integration Plugin
+Gradle Plugin
+Green Balls
+Kubernetes
+Kubernetes Cli Plugin
+Kubernetes Continuous Deploy Plugin
+LDAP Plugin
+Matrix Authorization Strategy Plugin
+Maven Integration plugin
+OWASP Markup Formatter Plugin
+PAM Authentication plugin
+Pipeline
+WMI Windows Agents Plugin
