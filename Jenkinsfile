@@ -70,14 +70,16 @@ spec:
         checkout scm
       }
 
-    } // node
-
-
       stage('Unit Tests') {
         container('maven') {
           sh "mvn test" ;
           }
         }
+
+    } // node
+
+
+
 
     /*
             stage('Building Application') {
