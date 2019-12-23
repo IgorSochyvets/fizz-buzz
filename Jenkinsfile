@@ -1,24 +1,12 @@
 #!/usr/bin/env groovy
 
 
-// not working / for Environment variables
-//import hudson.model.*
-//def hardcoded_param = "FOOBAR"
-//def resolver = build.buildVariableResolver
-//def hardcoded_param_value = resolver.resolve(hardcoded_param)
-env.DB_URL="hello"
+env.DOCKERHUB_IMAGE = 'nginx-test'
+env.DOCKERHUB_USER = 'kongurua'
+env.DEV_RELEASE_TAG = 'dev'
+env.QA_RELEASE_TAG = 'qa'
+env.PROD_RELEASE_TAG = 'prod'
 
-/*
-pipeline {
-
-  environment {
-      DOCKERHUB_IMAGE = 'nginx-test'
-      DOCKERHUB_USER = 'kongurua'
-      DEV_RELEASE_TAG = 'dev'
-      QA_RELEASE_TAG = 'qa'
-      PROD_RELEASE_TAG = 'prod'
-  }
-  */
 
 def label = "jenkins-agent"
 
@@ -99,7 +87,8 @@ spec:
 stage('Building Application') {
   container('maven') {
     sh 'echo "Test ENV VAR !!!"'
-    sh 'echo "${env.DB_URL}"'
+    sh 'echo "${DOCKERHUB_IMAGE}"'
+    sh 'echo "Test ENV VAR END!!!"'
     }
   }
 
