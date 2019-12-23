@@ -101,18 +101,96 @@ spec:
                sh  'echo "Create Docker image: ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}"'
                sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
                sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
-// next stem for test purpose/ TMP
-               sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
+//               sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
               }
             }
         }
 
+        if ( isPullRequest() ) {
+            // exitAsSuccess()
+            return 0
+        }
+
+        stage ('Docker push') {
+            container('docker') {
+              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    sh 'docker image ls'
+                    sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
+              }
+            }
+        }
+
+
+        if ( isPushtoFeatureBranch() ) {
+                // exitAsSuccess()
+                return 0
+        }
 
 
 
     } // node
   } //podTemplate
 
+
+
+  // is it push to Master branch?
+  def isMaster() {
+      return (env.BRANCH_NAME == "master" )
+  }
+
+  def isPullRequest() {
+      return (env.BRANCH_NAME ==~  /^PR-\d+$/)
+  }
+
+  def isBuildingTag() {
+      // add check that  is branch master?
+      return ( env.BRANCH_NAME ==~ /^v\d.\d.\d$/ )
+  }
+
+  def isPushtoFeatureBranch() {
+      return ( ! isMaster() && ! isBuildingTag() && ! isPullRequest() )
+  }
+
+  def isChangeSet() {
+
+      def changeLogSets = currentBuild.changeSets
+             for (int i = 0; i < changeLogSets.size(); i++) {
+             def entries = changeLogSets[i].items
+             for (int j = 0; j < entries.length; j++) {
+                 def files = new ArrayList(entries[j].affectedFiles)
+                 for (int k = 0; k < files.size(); k++) {
+                     def file = files[k]
+                     if (file.path.equals("production-release.txt")) {
+                         return true
+                     }
+                 }
+              }
+      }
+
+      return false
+  }
+
+/*
+  def deploy( tagName, appName ) {
+
+          echo "Release image: ${DOCKER_IMAGE_NAME}:$tagName"
+          echo "Deploy app name: $appName"
+
+          withKubeConfig([credentialsId: 'kubeconfig']) {
+          sh"""
+              kubectl delete deploy ${appName} --wait -n jenkins
+              kubectl delete svc ${appName} --wait -n jenkins
+              kubectl run ${appName} -n jenkins --image=${DOCKER_IMAGE_NAME}:${tagName} \
+                  --port=3000 --labels="app=$appName" --image-pull-policy=Always \
+                  --env="INPUT_VERSION=$appName"
+              kubectl expose -n jenkins deploy/${appName} --port=3000 --target-port=3000 --type=NodePort
+              kubectl get svc -n jenkins
+          """
+          }
+
+  }
+
+*/
 
 
 // stages {
