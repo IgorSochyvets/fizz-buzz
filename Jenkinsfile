@@ -1,7 +1,8 @@
 #!/usr/bin/env groovy
 
-//import hudson.model.*
 
+// not working / for Environment variables
+//import hudson.model.*
 //def hardcoded_param = "FOOBAR"
 //def resolver = build.buildVariableResolver
 //def hardcoded_param_value = resolver.resolve(hardcoded_param)
@@ -102,7 +103,7 @@ spec:
 //           steps{
             container('docker') {
              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-               sh  'println "param ${hardcoded_param} value : ${hardcoded_param_value}"'
+//               sh  'println "param ${hardcoded_param} value : ${hardcoded_param_value}"'
                sh  'echo "Create Docker images for DEV release"'
                sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
                sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
