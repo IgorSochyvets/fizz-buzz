@@ -98,19 +98,20 @@ spec:
     stage('Creating Docker Image') {
             container('docker') {
              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-               sh  'echo "Create Docker image: ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}"'
+               sh  'echo "Create Docker image: ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"'
                sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
                sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
-//               sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
               }
             }
         }
 
+// do not push docker image for PR
         if ( isPullRequest() ) {
             // exitAsSuccess()
             return 0
         }
 
+// push docker image for all other cases (except PR)
         stage ('Docker push') {
             container('docker') {
               withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
@@ -121,10 +122,71 @@ spec:
         }
 
 
+// do not deploy when 'push to branch' (and PR)
         if ( isPushtoFeatureBranch() ) {
                 // exitAsSuccess()
                 return 0
         }
+
+
+// deploy
+        def tagDockerImage
+        def nameStage
+
+//Deploy to Master (Dev and Prod)
+        if ( isMaster() ) {
+           stage('Deploy development version') {
+                echo "Every commit to master branch is a dev release"
+                echo "Its push to master"
+
+                tagDockerImage = env.BRANCH_NAME
+                nameStage = "app-dev"
+
+                container('kubectl') {
+                    deploy( tagDockerImage, nameStage )
+                 }
+           }
+
+
+           if ( isChangeSet()  ) {
+
+                stage('Deploy to Production')
+                    echo "Production release controlled by a change to production-release.txt file in application repository root,"
+                    echo "containing a git tag that should be released to production environment"
+
+                    tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
+                    //? need check is tag exist
+
+                    nameStage = "app-prod"
+
+                    container('kubectl') {
+                        deploy( tagDockerImage, nameStage )
+                    }
+
+
+        }
+
+      } // end of Master block
+
+
+//Deploy QA with tag
+      if ( isBuildingTag() ){
+          stage('Deploy to QA stage') {
+              echo "Every git tag on a master branch is a QA release"
+
+              tagDockerImage = env.BRANCH_NAME
+              nameStage = "app-qa"
+
+              container('kubectl') {
+                  deploy( tagDockerImage, nameStage )
+              }
+
+          // integrationTest
+          // stage('approve'){ input "OK to go?" }
+          }
+
+
+      }
 
 
 
@@ -170,183 +232,16 @@ spec:
       return false
   }
 
-/*
+
   def deploy( tagName, appName ) {
 
-          echo "Release image: ${DOCKER_IMAGE_NAME}:$tagName"
+          echo "Release image: ${DOCKERHUB_IMAGE}:$tagName"
           echo "Deploy app name: $appName"
 
           withKubeConfig([credentialsId: 'kubeconfig']) {
           sh"""
-              kubectl delete deploy ${appName} --wait -n jenkins
-              kubectl delete svc ${appName} --wait -n jenkins
-              kubectl run ${appName} -n jenkins --image=${DOCKER_IMAGE_NAME}:${tagName} \
-                  --port=3000 --labels="app=$appName" --image-pull-policy=Always \
-                  --env="INPUT_VERSION=$appName"
-              kubectl expose -n jenkins deploy/${appName} --port=3000 --target-port=3000 --type=NodePort
-              kubectl get svc -n jenkins
+              kubectl get ns
           """
           }
 
   }
-
-*/
-
-
-// stages {
-
-
-/*
-// dev
-// Every commit to master branch is a dev release
-    stage('Create Docker images for DEV release') {
-           when {
-                branch 'master'
-            }
-           steps{
-            container('docker') {
-             withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-               sh  'echo "Create Docker images for DEV release"'
-               sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
-               sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
-               sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
-              }
-            }
-          }
-        }
-
-
-// QA
-// Every git tag on a master branch is a QA release
-        stage('Create Docker images for QA release') {
-          when { not
-           {
-               anyOf {
-                    // Put here ALL branches!!!
-                   branch 'development'
-                   branch 'feature-*'
-                   branch 'master'
-                   branch 'PR-*'
-               }
-           }
-         }
-               steps{
-                container('docker') {
-                 withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-                   sh  'echo "Create Docker images for QA release"'
-                   sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
-                   sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
-                   sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
-                  }
-                }
-              }
-            }
-
-
-// prod
-// Production release controlled by a change to production-release.txt file in application repository root, containing a git tag that should be released to production environment
-
-stage('Create Docker images for PROD release') {
-  when {
-       allOf {
-           changeset "production-release.txt"
-           branch 'master'
-       }
- }
-       steps{
-        container('docker') {
-         withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-//           sh  'PROD_RELEASE_TAG1=`cat production-release.txt`'
-//           sh  'PROD_RELEASE_TAG="${sh(script:'cat production-release.txt',returnStdout: true)}"'
-           sh  'echo "Create Docker images for PROD release"'
-           sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
-           sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:`cat production-release.txt` .'
-           sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:`cat production-release.txt`'
-          }
-        }
-      }
-    }
-
-
-
-// branch
-// Every branch that is not also a PR should have build, test, docker image build, docker image push steps with docker image tag = branch name
-// next stage works after commit to every branch
-    stage('Create Docker images for Branches') {
-           when {
-                anyOf {
-                    // Put here ALL branches!!! without "master"
-                    branch 'development'
-                    branch 'feature-*'
-                }
-            }
-           steps{
-            container('docker') {
-             withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-               sh  'echo "Create Docker images for Branch release"'
-               sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
-               sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
-               sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
-              }
-            }
-          }
-        }
-
-
-// PR
-// Every PR should have build, test, docker image build, docker image push steps with docker tag = pr-number
-// next stage works after PR
-        stage('Create Docker images for PR') {
-              when {
-                              expression { BRANCH_NAME =~ 'PR-*' }
-              }
-               steps{
-                container('docker') {
-                 withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-                   sh  'echo "Create Docker images for PR release"'
-                   sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
-                   sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
-                   sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
-                  }
-                }
-              }
-            }
-
-
-// do next stage after pushin docker image and before deployment
-    /*
-      stage ('Helm create') {
-       steps {
-        container ('helm') {
-            sh "helm version"
-            sh "helm create java-web-app-chart"
-        }
-       }
-      }
-
-
-
-    // Test Kubeconfig
-
-          stage ('Test Kubeconfig') {
-           steps {
-            container ('kubectl') {
-                withKubeConfig([credentialsId: 'kubeconfig']) {
-                  sh 'echo "Test Kubeconfig"'
-                  sh 'kubectl get ns'
-                }
-            }
-           }
-          }
-
-// Deployment stage
-
-  }
-  post {
-      always {
-          echo 'This is a post message!!'
-      }
-  }
-}
-
-*/
