@@ -1,10 +1,10 @@
 #!/usr/bin/env groovy
 
-import hudson.model.*
+//import hudson.model.*
 
-def hardcoded_param = "FOOBAR"
-def resolver = build.buildVariableResolver
-def hardcoded_param_value = resolver.resolve(hardcoded_param)
+//def hardcoded_param = "FOOBAR"
+//def resolver = build.buildVariableResolver
+//def hardcoded_param_value = resolver.resolve(hardcoded_param)
 
 
 /*
