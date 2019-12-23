@@ -1,5 +1,12 @@
 #!/usr/bin/env groovy
 
+import hudson.model.*
+
+def hardcoded_param = "FOOBAR"
+def resolver = build.buildVariableResolver
+def hardcoded_param_value = resolver.resolve(hardcoded_param)
+
+
 /*
 pipeline {
 
@@ -77,18 +84,38 @@ spec:
           }
         }
 */
-
+/* working / tested
         stage('Building Application') {
           container('maven') {
             sh "mvn install" ;
             }
           }
+*/
+
+
+// dev
+// Every commit to master branch is a dev release
+    stage('Create Docker images for DEV release') {
+//         when {
+//                branch 'master'
+//            }
+//           steps{
+            container('docker') {
+             withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+               sh  'println "param ${hardcoded_param} value : ${hardcoded_param_value}"'
+               sh  'echo "Create Docker images for DEV release"'
+               sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
+               sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
+               sh  'docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}'
+              }
+            }
+//          }
+        }
+
+
+
 
     } // node
-
-
-
-
   } //podTemplate
 
 
@@ -96,19 +123,7 @@ spec:
 // stages {
 
 
-// do next stage after every commit to every branch;
 /*
-        stage('RUN Unit Tests') {
-        steps {
-        container('maven') {
-          sh "mvn install"
-          sh "mvn test" ;
-          }
-        }
-    }
-
-
-
 // dev
 // Every commit to master branch is a dev release
     stage('Create Docker images for DEV release') {
