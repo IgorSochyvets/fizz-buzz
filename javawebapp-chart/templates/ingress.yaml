@@ -1,12 +1,12 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "javaWebAppChart.fullname" . -}}
+{{- $fullName := include "javawebapp-chart.fullname" . -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    app.kubernetes.io/name: {{ include "javaWebAppChart.name" . }}
-    helm.sh/chart: {{ include "javaWebAppChart.chart" . }}
+    app.kubernetes.io/name: {{ include "javawebapp-chart.name" . }}
+    helm.sh/chart: {{ include "javawebapp-chart.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
   {{- with .Values.ingress.annotations }}
@@ -29,11 +29,9 @@ spec:
     - host: {{ .host | quote }}
       http:
         paths:
-        {{- range .paths }}
-          - path: {{ . }}
+          - path: {{ default "/" .path }}
             backend:
               serviceName: {{ $fullName }}
               servicePort: http
         {{- end }}
-  {{- end }}
-{{- end }}
+    {{- end }}

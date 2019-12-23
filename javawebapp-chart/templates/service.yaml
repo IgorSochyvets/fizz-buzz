@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "javaWebAppChart.fullname" . }}
+  name: {{ include "javawebapp-chart.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "javaWebAppChart.name" . }}
-    helm.sh/chart: {{ include "javaWebAppChart.chart" . }}
+    app.kubernetes.io/name: {{ include "javawebapp-chart.name" . }}
+    helm.sh/chart: {{ include "javawebapp-chart.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
@@ -15,5 +15,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: {{ include "javaWebAppChart.name" . }}
+    app.kubernetes.io/name: {{ include "javawebapp-chart.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
