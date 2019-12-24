@@ -245,7 +245,6 @@ spec:
      container('helm') {
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
-            helm delete --purge $name
             echo "Deployments is starting..."
             helm upgrade --install $name --debug ./javawebapp-chart \
             --force \
