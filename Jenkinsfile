@@ -6,6 +6,7 @@ env.DOCKERHUB_USER = 'kongurua'
 env.DEV_RELEASE_TAG = 'dev'
 env.QA_RELEASE_TAG = 'qa'
 env.PROD_RELEASE_TAG = 'prod'
+env.APPNAME = 'javawebapp'
 
 
 def label = "jenkins-agent"
@@ -139,12 +140,7 @@ spec:
                 echo "Every commit to master branch is a dev release"
                 echo "Its push to master"
 
-                tagDockerImage = env.BRANCH_NAME
-                nameStage = "app-dev"
-
-                container('kubectl') {
-                    deploy( tagDockerImage, nameStage )
-                 }
+                deployHelm("javawebapp","dev",env.BRANCH_NAME)
            }
 
 
@@ -232,7 +228,7 @@ spec:
       return false
   }
 
-
+/* check k8s commectivity
   def deploy( tagName, appName ) {
 
           echo "Release image: ${DOCKERHUB_IMAGE}:$tagName"
@@ -245,3 +241,27 @@ spec:
           }
 
   }
+  */
+
+// name = javawebapp
+// ns = dev/qa/prod
+// tag = image's tag
+  def deployHelm(name, ns, tag) {
+
+     container('helm') {
+        withKubeConfig([credentialsId: 'kubeconfig']) {
+        sh """
+            echo appVersion: "$tag" >> ./javawebapp-chart/Chart.yaml
+            helm upgrade --install $name --debug ./javawebapp-chart \
+            --force \
+            --wait \
+            --namespace $ns \
+            --set image.tag=$tag \
+            --set image.repository=${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}
+            helm ls
+        """
+
+        }
+    }
+
+}
