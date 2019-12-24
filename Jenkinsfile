@@ -138,7 +138,7 @@ spec:
         if ( isMaster() ) {
            stage('Deploy development version') {
                 echo "Every commit to master branch is a dev release"
-                echo "Its push to master"
+                echo "Deploy Dev release after commit to master"
 
                 deployHelm("javawebapp","dev",env.BRANCH_NAME)
            }
@@ -247,17 +247,11 @@ spec:
 // ns = dev/qa/prod
 // tag = image's tag
   def deployHelm(name, ns, tag) {
-
      container('helm') {
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
             echo appVersion: "$tag" >> ./javawebapp-chart/Chart.yaml
-            helm upgrade --install $name --debug ./javawebapp-chart \
-            --force \
-            --wait \
-            --namespace $ns \
-            --set image.tag=$tag \
-            --set image.repository=$DOCKERHUB_USER/$DOCKERHUB_IMAGE
+            helm upgrade --install $name --debug ./javawebapp-chart --force --wait --namespace $ns --set image.tag=$tag --set image.repository=$DOCKERHUB_USER/$DOCKERHUB_IMAGE
             helm ls
         """
 
