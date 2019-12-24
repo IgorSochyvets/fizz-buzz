@@ -257,7 +257,7 @@ spec:
             --wait \
             --namespace $ns \
             --set image.tag=$tag \
-            --set image.repository=${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}
+            --set image.repository=$DOCKERHUB_USER/$DOCKERHUB_IMAGE
             helm ls
         """
 
