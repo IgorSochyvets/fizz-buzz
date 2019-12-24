@@ -1,12 +1,12 @@
 #!/usr/bin/env groovy
 
 
-env.DOCKERHUB_IMAGE = 'nginx-test'
+env.DOCKERHUB_IMAGE = 'fizz-buzz'
 env.DOCKERHUB_USER = 'kongurua'
-env.DEV_RELEASE_TAG = 'dev'
-env.QA_RELEASE_TAG = 'qa'
-env.PROD_RELEASE_TAG = 'prod'
-env.APPNAME = 'javawebapp'
+//env.DEV_RELEASE_TAG = 'dev'
+//env.QA_RELEASE_TAG = 'qa'
+//env.PROD_RELEASE_TAG = 'prod'
+//env.APPNAME = 'javawebapp'
 
 
 def label = "jenkins-agent"
@@ -69,23 +69,18 @@ spec:
       }
 
 
-/* working / tested
       stage('Unit Tests') {
         container('maven') {
           sh "mvn test" ;
           }
         }
-*/
 
-/* working / tested
-        stage('Building Application') {
-          container('maven') {
-            sh "mvn install"
-            }
+
+      stage('Building Application') {
+        container('maven') {
+          sh "mvn install"
           }
-*/
-
-
+        }
 
 
 // Docker Image Building
