@@ -140,7 +140,7 @@ spec:
                 echo "Every commit to master branch is a dev release"
                 echo "Deploy Dev release after commit to master"
 
-                deployHelm(${APPNAME},"dev",env.BRANCH_NAME)
+                deployHelm("javawebapp","dev",env.BRANCH_NAME)
            }
 
 
