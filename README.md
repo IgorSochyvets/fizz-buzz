@@ -26,6 +26,4 @@ This is CI/CD project realized using Jenkins
 * Create Jenkins pipepine for CI/CD process using with test app
 
 
-* test line 3
-* test line 4
-* test line 5
+* test line 1
