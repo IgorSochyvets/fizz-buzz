@@ -1,7 +1,7 @@
 #!/usr/bin/env groovy
 
 
-env.DOCKERHUB_IMAGE = 'java-web-app'
+env.DOCKERHUB_IMAGE = 'fizz-buzz'
 env.DOCKERHUB_USER = 'kongurua'
 //env.DEV_RELEASE_TAG = 'dev'
 //env.QA_RELEASE_TAG = 'qa'

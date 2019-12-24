@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: kongurua/java-web-app
+  repository: kongurua/fizz-buzz
   tag: latest
   pullPolicy: IfNotPresent
 
