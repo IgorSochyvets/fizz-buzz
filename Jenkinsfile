@@ -257,6 +257,8 @@ spec:
             --set image.tag=$tag \
             --set image.repository=$DOCKERHUB_USER/$DOCKERHUB_IMAGE \
             --set-string ingress.hosts[0].host=javawebapp-${ns}.ddns.net \
+            --set-string ingress.tls[0].hosts[0]=javawebapp-${ns}.ddns.net \
+            --set-string ingress.tls[0].secretName=acme-$name-tls
         """
 
         }
