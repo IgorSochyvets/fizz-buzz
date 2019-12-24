@@ -256,7 +256,8 @@ spec:
             --wait \
             --namespace $ns \
             --set image.tag=$tag \
-            --set image.repository=$DOCKERHUB_USER/$DOCKERHUB_IMAGE
+            --set image.repository=$DOCKERHUB_USER/$DOCKERHUB_IMAGE \
+            --set-string ingress.hosts[0].host=javawebapp-qa.ddns.net \
             helm ls
         """
 
@@ -264,3 +265,8 @@ spec:
     }
 
 }
+
+/*
+--set-string ingress.tls[0].hosts[0]=$name.$host \
+--set-string ingress.tls[0].secretName=acme-$name-tls
+*/
