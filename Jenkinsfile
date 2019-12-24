@@ -257,7 +257,7 @@ spec:
             --namespace $ns \
             --set image.tag=$tag \
             --set image.repository=$DOCKERHUB_USER/$DOCKERHUB_IMAGE \
-            --set-string ingress.hosts[0].host=javawebapp-$ns\..ddns.net \
+            --set-string ingress.hosts[0].host=javawebapp-${ns}.ddns.net \
             helm ls
         """
 
