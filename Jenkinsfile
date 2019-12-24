@@ -250,7 +250,6 @@ spec:
      container('helm') {
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
-            echo appVersion: "$tag" >> ./javawebapp-chart/Chart.yaml
             helm upgrade --install $name --debug ./javawebapp-chart \
             --force \
             --wait \
@@ -258,7 +257,6 @@ spec:
             --set image.tag=$tag \
             --set image.repository=$DOCKERHUB_USER/$DOCKERHUB_IMAGE \
             --set-string ingress.hosts[0].host=javawebapp-${ns}.ddns.net \
-            helm ls
         """
 
         }
