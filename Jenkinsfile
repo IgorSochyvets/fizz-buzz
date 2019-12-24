@@ -251,7 +251,12 @@ spec:
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
             echo appVersion: "$tag" >> ./javawebapp-chart/Chart.yaml
-            helm upgrade --install $name --debug ./javawebapp-chart --force --wait --namespace $ns --set image.tag=$tag --set image.repository=$DOCKERHUB_USER/$DOCKERHUB_IMAGE
+            helm upgrade --install $name --debug ./javawebapp-chart \
+            --force \
+            --wait \
+            --namespace $ns \
+            --set image.tag=$tag \
+            --set image.repository=$DOCKERHUB_USER/$DOCKERHUB_IMAGE
             helm ls
         """
 
