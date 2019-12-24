@@ -140,7 +140,7 @@ spec:
                 echo "Every commit to master branch is a dev release"
                 echo "Deploy Dev release after commit to master"
 
-                deployHelm("javawebapp","dev",env.BRANCH_NAME)
+                deployHelm($APPNAME,"dev",env.BRANCH_NAME)
            }
 
 
@@ -257,7 +257,7 @@ spec:
             --namespace $ns \
             --set image.tag=$tag \
             --set image.repository=$DOCKERHUB_USER/$DOCKERHUB_IMAGE \
-            --set-string ingress.hosts[0].host=javawebapp-qa.ddns.net \
+            --set-string ingress.hosts[0].host=javawebapp-$ns\..ddns.net \
             helm ls
         """
 
