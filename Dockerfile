@@ -1,4 +1,4 @@
-FROM openjdk:8
-ADD target/java-web-app.jar java-web-app.jar
+FROM openjdk:13
+ADD target/fizz-buzz.jar fizz-buzz.jar
 EXPOSE 80
-ENTRYPOINT ["java", "-jar", "java-web-app.jar" ]
+ENTRYPOINT ["java", "-jar", "fizz-buzz.jar" ]
