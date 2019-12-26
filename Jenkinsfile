@@ -60,7 +60,7 @@ spec:
   ){
 
     node(label) {
-      
+
       def tagDockerImage
       def nameStage
 
@@ -125,14 +125,16 @@ spec:
 
 //Deploy to Master (Dev and Prod)
 // DEV release
-/*
+
         if ( isMaster() ) {
            stage('Deploy DEV release') {
                 echo "Every commit to master branch is a dev release"
                 echo "Deploy Dev release after commit to master"
                 deployHelm("javawebapp-dev","dev",env.BRANCH_NAME)
            }
+        } // end of Master block
 
+/*
 // PROD release
             if ( isChangeSet()  ) {
 
@@ -150,7 +152,7 @@ spec:
         }
 
 
-      } // end of Master block
+
 */
 
 // PROD release
@@ -263,7 +265,6 @@ spec:
             --namespace $ns \
             --set image.tag=$tag \
             --set image.repository=$DOCKERHUB_USER/$DOCKERHUB_IMAGE \
-            --set ingress.hostName=${name}.ddns.net \
             --set-string ingress.hosts[0].host=${name}.ddns.net \
             --set-string ingress.tls[0].hosts[0]=${name}.ddns.net \
             --set-string ingress.tls[0].secretName=acme-$name-tls
