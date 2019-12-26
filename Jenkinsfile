@@ -132,15 +132,12 @@ spec:
 //Deploy to Master (Dev and Prod)
 // DEV release
         if ( isMaster() ) {
-
-          /*
            stage('Deploy development version') {
                 echo "Every commit to master branch is a dev release"
                 echo "Deploy Dev release after commit to master"
-
                 deployHelm("javawebapp-dev","dev",env.BRANCH_NAME)
            }
-           */
+/*
 // PROD release
             if ( isChangeSet()  ) {
 
@@ -155,18 +152,29 @@ spec:
                               // image tag from file production-release.txt , namespace , name chart release
 
               } //stage
-
-              stage('Deploy DEV release') {
-                   echo "Every commit to master branch is a dev release"
-                   echo "Deploy Dev release after commit to master"
-
-                   deployHelm("javawebapp-dev","dev",env.BRANCH_NAME)
-              }
-
-
         }
+*/
 
       } // end of Master block
+
+
+// PROD release
+              if ( isMaster() ) {
+                  if ( isChangeSet()  ) {
+                    stage('Deploy to PROD') {
+                        echo "Production release controlled by a change to production-release.txt file in application repository root,"
+                        echo "containing a git tag that should be released to production environment"
+                        tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
+                        //? need check is tag exist
+                        deployHelm("javawebapp-prod","prod",tagDockerImage)
+                                    // image tag from file production-release.txt , namespace , name chart release
+                    } //stage
+              }
+            } // end of Master block
+
+
+
+
 
 
 //Deploy QA with tag
