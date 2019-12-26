@@ -259,7 +259,7 @@ spec:
             echo "Deployments is starting..."
             helm delete $name
 
-            helm upgrade --install $name \ --debug ./javawebapp-chart \
+            helm upgrade --install $name --debug ./javawebapp-chart \
             --force \
             --wait \
             --namespace $ns \
