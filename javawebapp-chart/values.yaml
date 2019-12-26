@@ -6,7 +6,6 @@ replicaCount: 1
 
 image:
   repository: kongurua/fizz-buzz
-  tag: master
   pullPolicy: Always
 
 nameOverride: ""
