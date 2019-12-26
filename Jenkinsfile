@@ -132,17 +132,19 @@ spec:
 //Deploy to Master (Dev and Prod)
 // DEV release
         if ( isMaster() ) {
+
+          /*
            stage('Deploy development version') {
                 echo "Every commit to master branch is a dev release"
                 echo "Deploy Dev release after commit to master"
 
                 deployHelm("javawebapp-dev","dev",env.BRANCH_NAME)
            }
-
+           */
 // PROD release
             if ( isChangeSet()  ) {
 
-              stage('Deploy to Production') {
+              stage('Deploy to PROD') {
                   echo "Production release controlled by a change to production-release.txt file in application repository root,"
                   echo "containing a git tag that should be released to production environment"
 
@@ -154,6 +156,12 @@ spec:
 
               } //stage
 
+              stage('Deploy DEV release') {
+                   echo "Every commit to master branch is a dev release"
+                   echo "Deploy Dev release after commit to master"
+
+                   deployHelm("javawebapp-dev","dev",env.BRANCH_NAME)
+              }
 
 
         }
@@ -163,7 +171,7 @@ spec:
 
 //Deploy QA with tag
             if ( isBuildingTag() ){
-              stage('Deploy to QA stage') {
+              stage('Deploy QA release') {
                   echo "Every git tag on a master branch is a QA release"
 
                   deployHelm( "javawebapp-qa",                      // name chart release
