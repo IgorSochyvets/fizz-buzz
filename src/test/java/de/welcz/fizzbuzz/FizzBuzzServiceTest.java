@@ -28,8 +28,9 @@ class FizzBuzzServiceTest {
     @ParameterizedTest
     @ValueSource(ints = {3, 6})
     void fizz_numbers_divisible_by_3(int input) {
-        assertThat(service.calculate(input)).isEqualTo("Fizz");
+        assertThat(service.calculate(input)).isEqualTo("Fizz-Buzz");
     }
+// Fizz
 
     @ParameterizedTest
     @ValueSource(ints = {5, 10})
