@@ -194,7 +194,7 @@ spec:
 
   def isBuildingTag() {
       // add check that  is branch master?
-      return ( env.BRANCH_NAME ==~ /^v\d.\d.\d$/ )
+      return ( env.BRANCH_NAME ==~ /^\d.\d.\d$/ )
   }
 
   def isPushtoFeatureBranch() {
