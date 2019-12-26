@@ -251,8 +251,8 @@ spec:
             --namespace $ns \
             --set image.tag=$tag \
             --set image.repository=$DOCKERHUB_USER/$DOCKERHUB_IMAGE \
-            --set-string ingress.hosts[0].host=${name}-${ns}.ddns.net \
-            --set-string ingress.tls[0].hosts[0]=${name}-${ns}.ddns.net \
+            --set-string ingress.hosts[0].host=${name}.ddns.net \
+            --set-string ingress.tls[0].hosts[0]=${name}.ddns.net \
             --set-string ingress.tls[0].secretName=acme-$name-tls
 
             helm ls
