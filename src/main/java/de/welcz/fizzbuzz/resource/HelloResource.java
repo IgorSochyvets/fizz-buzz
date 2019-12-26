@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloResource {
     @GetMapping
     public String hello() {
-        return "Hello Devops v.24; deploy time: 7:01;  Fizz-Buzz Game Path:  /api/v1/fizz-buzz/numbers/15";
+        return "Hello Devops v.25; deploy time: 7:01;  Fizz-Buzz Game Path:  /api/v1/fizz-buzz/numbers/15";
     }
 }
