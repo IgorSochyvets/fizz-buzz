@@ -1,13 +1,11 @@
 #!/usr/bin/env groovy
 
-
 env.DOCKERHUB_IMAGE = 'fizz-buzz'
 env.DOCKERHUB_USER = 'kongurua'
 //env.DEV_RELEASE_TAG = 'dev'
 //env.QA_RELEASE_TAG = 'qa'
 //env.PROD_RELEASE_TAG = 'prod'
 //env.APPNAME = 'javawebapp'
-
 
 def label = "jenkins-agent"
 
@@ -63,11 +61,9 @@ spec:
 
     node(label) {
 
-
       stage('Checkout SCM') {
         checkout scm
       }
-
 
       stage('Unit Tests') {
         container('maven') {
@@ -75,13 +71,11 @@ spec:
           }
         }
 
-
       stage('Building Application') {
         container('maven') {
           sh "mvn install"
           }
         }
-
 
 // Docker Image Building
         // Environment variables DOCKERHUB_USER, DOCKERHUB_IMAGE
@@ -117,13 +111,11 @@ spec:
             }
         }
 
-
 // do not deploy when 'push to branch' (and PR)
         if ( isPushtoFeatureBranch() ) {
                 // exitAsSuccess()
                 return 0
         }
-
 
 // deploy
         def tagDockerImage
