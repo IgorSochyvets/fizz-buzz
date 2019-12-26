@@ -237,7 +237,7 @@ spec:
 
   }
   */
-
+//          helm delete $name
 // name = javawebapp
 // ns = dev/qa/prod
 // tag = image's tag
@@ -246,7 +246,7 @@ spec:
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
             echo "Deployments is starting..."
-            helm delete $name
+
 
             helm upgrade --install $name --debug ./javawebapp-chart \
             --force \
