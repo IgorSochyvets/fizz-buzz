@@ -60,6 +60,9 @@ spec:
   ){
 
     node(label) {
+      
+      def tagDockerImage
+      def nameStage
 
       stage('Checkout SCM') {
         checkout scm
@@ -85,7 +88,7 @@ spec:
         // BRANCH_NAME = develop - other branch
         // BRANCH_NAME = v0.0.1  - git tag
         //
-    stage('Creating Docker Image') {
+    stage('Docker build') {
             container('docker') {
              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
                sh  'echo "Create Docker image: ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"'
@@ -118,8 +121,7 @@ spec:
         }
 
 // deploy
-        def tagDockerImage
-        def nameStage
+
 
 //Deploy to Master (Dev and Prod)
 // DEV release
