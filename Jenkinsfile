@@ -237,6 +237,8 @@ spec:
 // name = javawebapp
 // ns = dev/qa/prod
 // tag = image's tag
+
+// !! need to change deployment version or label in order to re-deploy pod
   def deployHelm(name, ns, tag) {
      container('helm') {
         withKubeConfig([credentialsId: 'kubeconfig']) {
