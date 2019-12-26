@@ -251,6 +251,7 @@ spec:
             --wait \
             --namespace $ns \
             --set image.tag=$tag \
+            --set image.pullPolicy=Always \
             --set image.repository=$DOCKERHUB_USER/$DOCKERHUB_IMAGE \
             --set-string ingress.hosts[0].host=${name}-${ns}.ddns.net \
             --set-string ingress.tls[0].hosts[0]=${name}-${ns}.ddns.net \
