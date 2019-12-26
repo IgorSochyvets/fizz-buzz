@@ -125,7 +125,7 @@ spec:
 // DEV release
 /*
         if ( isMaster() ) {
-           stage('Deploy development version') {
+           stage('Deploy DEV release') {
                 echo "Every commit to master branch is a dev release"
                 echo "Deploy Dev release after commit to master"
                 deployHelm("javawebapp-dev","dev",env.BRANCH_NAME)
@@ -134,7 +134,7 @@ spec:
 // PROD release
             if ( isChangeSet()  ) {
 
-              stage('Deploy to PROD') {
+              stage('Deploy PROD release') {
                   echo "Production release controlled by a change to production-release.txt file in application repository root,"
                   echo "containing a git tag that should be released to production environment"
 
@@ -154,7 +154,7 @@ spec:
 // PROD release
               if ( isMaster() ) {
                   if ( isChangeSet()  ) {
-                    stage('Deploy to PROD') {
+                    stage('Deploy PROD release') {
                         echo "Production release controlled by a change to production-release.txt file in application repository root,"
                         echo "containing a git tag that should be released to production environment"
                         tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
@@ -261,6 +261,7 @@ spec:
             --namespace $ns \
             --set image.tag=$tag \
             --set image.repository=$DOCKERHUB_USER/$DOCKERHUB_IMAGE \
+            --set ingress.hostName=${name}.ddns.net \
             --set-string ingress.hosts[0].host=${name}.ddns.net \
             --set-string ingress.tls[0].hosts[0]=${name}.ddns.net \
             --set-string ingress.tls[0].secretName=acme-$name-tls
