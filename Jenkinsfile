@@ -130,29 +130,31 @@ spec:
         def nameStage
 
 //Deploy to Master (Dev and Prod)
+// DEV release
         if ( isMaster() ) {
            stage('Deploy development version') {
                 echo "Every commit to master branch is a dev release"
                 echo "Deploy Dev release after commit to master"
 
-                deployHelm("javawebapp","dev",env.BRANCH_NAME)
+                deployHelm("javawebapp-dev","dev",env.BRANCH_NAME)
            }
 
+// PROD release
+            if ( isChangeSet()  ) {
 
-           if ( isChangeSet()  ) {
+              stage('Deploy to Production') {
+                  echo "Production release controlled by a change to production-release.txt file in application repository root,"
+                  echo "containing a git tag that should be released to production environment"
 
-                stage('Deploy to Production')
-                    echo "Production release controlled by a change to production-release.txt file in application repository root,"
-                    echo "containing a git tag that should be released to production environment"
+                  tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
+                  //? need check is tag exist
 
-                    tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
-                    //? need check is tag exist
+                  deployHelm( "javawebapp-prod",                      // name chart release
+                              "prod",                           // namespace
+                              tagDockerImage )                  // image tag from file production-release.txt
 
-                    nameStage = "app-prod"
+              } //stage
 
-                    container('kubectl') {
-                        deploy( tagDockerImage, nameStage )
-                    }
 
 
         }
@@ -161,24 +163,19 @@ spec:
 
 
 //Deploy QA with tag
-      if ( isBuildingTag() ){
-          stage('Deploy to QA stage') {
-              echo "Every git tag on a master branch is a QA release"
+            if ( isBuildingTag() ){
+              stage('Deploy to QA stage') {
+                  echo "Every git tag on a master branch is a QA release"
 
-              tagDockerImage = env.BRANCH_NAME
-              nameStage = "app-qa"
+                  deployHelm( "javawebapp-qa",                      // name chart release
+                              "qa",                           // namespace
+                              env.BRANCH_NAME )               // image tag = 0.0.1
 
-              container('kubectl') {
-                  deploy( tagDockerImage, nameStage )
-              }
+                          }
 
-          // integrationTest
-          // stage('approve'){ input "OK to go?" }
-          }
-
-
-      }
-
+                      // integrationTest
+                      // stage('approve'){ input "OK to go?" }
+                      }
 
 
     } // node
@@ -247,7 +244,7 @@ spec:
         sh """
             echo "Deployments is starting..."
             helm delete $name
-            
+
             helm upgrade --install $name --debug ./javawebapp-chart \
             --force \
             --wait \
