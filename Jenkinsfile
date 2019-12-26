@@ -246,6 +246,8 @@ spec:
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
             echo "Deployments is starting..."
+            helm delete --purge $name --wait
+
             helm upgrade --install $name --debug ./javawebapp-chart \
             --force \
             --wait \
@@ -256,6 +258,8 @@ spec:
             --set-string ingress.hosts[0].host=${name}-${ns}.ddns.net \
             --set-string ingress.tls[0].hosts[0]=${name}-${ns}.ddns.net \
             --set-string ingress.tls[0].secretName=acme-$name-tls
+
+            helm ls
         """
 
         }
