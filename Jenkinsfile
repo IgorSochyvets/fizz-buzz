@@ -68,17 +68,17 @@ spec:
         checkout scm
       }
 
-/*
+
       stage('Unit Tests') {
         container('maven') {
-          sh "mvn test" ;
+          sh "mvn clean test" ;
           }
         }
-*/
+
 
       stage('Building Application') {
         container('maven') {
-          sh "mvn install"
+          sh "mvn clean install"
           }
         }
 
