@@ -149,9 +149,8 @@ spec:
                   tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
                   //? need check is tag exist
 
-                  deployHelm( "javawebapp-prod",                      // name chart release
-                              "prod",                           // namespace
-                              tagDockerImage )                  // image tag from file production-release.txt
+                  deployHelm("javawebapp-prod","prod",tagDockerImage)
+                              // image tag from file production-release.txt , namespace , name chart release
 
               } //stage
 
