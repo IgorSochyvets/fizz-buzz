@@ -246,7 +246,7 @@ spec:
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
             echo "Deployments is starting..."
-            helm delete --purge $name --wait
+            helm delete $name
 
             helm upgrade --install $name --debug ./javawebapp-chart \
             --force \
