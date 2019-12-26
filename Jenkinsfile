@@ -247,7 +247,7 @@ spec:
         sh """
             echo "Deployments is starting..."
 
-
+             echo appVersion: "$tag" >> ./javawebapp-chart/Chart.yaml
             helm upgrade --install $name --debug ./javawebapp-chart \
             --force \
             --wait \
