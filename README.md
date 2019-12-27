@@ -37,7 +37,7 @@ This is CI/CD project realized using Jenkins
 4. git push origin feature-9
 5. Check if new docker image been created (fizz-buzz:feature-9)
 6. Go to GitHub and create PR
-7. Check  if new docker image been created (fizz-buzz:PR-<NN>)
+7. Check Jenkins logs logs ( docker build fizz-buzz:PR-<NN> / no push)
 8. Git checkout master
 9. Do some changes (Hello DevOps v +1)
 10. Git commit -a -m “Dev v +1” && git push origin master
