@@ -85,6 +85,8 @@ spec:
         // BRANCH_NAME = v0.0.1  - git tag
         //
     stage('Docker build') {
+
+      if  ( !isChangeSet() ) {
             container('docker') {
              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
                sh  'echo "Create Docker image: ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"'
@@ -92,7 +94,9 @@ spec:
                sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
               }
             }
-        }
+
+      }
+    }
 
 // do not push docker image for PR
         if ( isPullRequest() ) {
@@ -101,6 +105,8 @@ spec:
         }
 
 // push docker image for all other cases (except PR)
+
+    if  ( !isChangeSet() ) {
         stage ('Docker push') {
             container('docker') {
               withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
@@ -109,6 +115,7 @@ spec:
               }
             }
         }
+    }
 
 // do not deploy when 'push to branch' (and PR)
         if ( isPushtoFeatureBranch() ) {
@@ -117,7 +124,6 @@ spec:
         }
 
 // deploy
-
 
         if ( isChangeSet()  ) {
             stage('Deploy PROD release') {
