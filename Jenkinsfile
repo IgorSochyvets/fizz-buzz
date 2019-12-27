@@ -269,4 +269,4 @@ spec:
 
 }
 
-#             helm delete $name
+//            helm delete $name
