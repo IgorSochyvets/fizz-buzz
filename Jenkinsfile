@@ -276,8 +276,3 @@ spec:
     }
 
 }
-
-/*
---set-string ingress.tls[0].hosts[0]=$name.$host \
---set-string ingress.tls[0].secretName=acme-$name-tls
-*/
