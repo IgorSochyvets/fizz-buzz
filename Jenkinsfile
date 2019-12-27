@@ -250,7 +250,6 @@ spec:
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
             echo "Deployments is starting..."
-            helm delete $name
 
             helm upgrade --install $name --debug ./javawebapp-chart \
             --force \
@@ -269,3 +268,5 @@ spec:
     }
 
 }
+
+#             helm delete $name
