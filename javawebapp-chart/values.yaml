@@ -28,7 +28,7 @@ ingress:
   tls:
     - secretName: chart-example-tls
       hosts:
-#        -javawebapp-dev.ddns.net
+        -javawebapp-dev.ddns.net
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
