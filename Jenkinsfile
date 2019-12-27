@@ -121,7 +121,7 @@ spec:
 
 //Deploy to Master (Dev and Prod)
 // DEV release
-/*
+
         if ( isMaster() ) {
            stage('Deploy DEV release') {
                 echo "Every commit to master branch is a dev release"
@@ -129,7 +129,7 @@ spec:
                 deployHelm("javawebapp-dev","dev",env.BRANCH_NAME)
            }
         } // end of Master block
-*/
+
 /*
 // PROD release
             if ( isChangeSet()  ) {
@@ -165,6 +165,7 @@ spec:
               }
             } // end of Master block
 
+//return 0
 
 
 //Deploy QA with tag
@@ -199,7 +200,7 @@ spec:
 
   def isBuildingTag() {
       // add check that  is branch master?
-      return ( env.BRANCH_NAME ==~ /^\d.\d.\d$/ )
+      return ( env.BRANCH_NAME ==~ /^\d.\d.\dd$/ )
   }
 
   def isPushtoFeatureBranch() {
@@ -225,21 +226,7 @@ spec:
       return false
   }
 
-/* check k8s commectivity
-  def deploy( tagName, appName ) {
 
-          echo "Release image: ${DOCKERHUB_IMAGE}:$tagName"
-          echo "Deploy app name: $appName"
-
-          withKubeConfig([credentialsId: 'kubeconfig']) {
-          sh"""
-              kubectl get ns
-          """
-          }
-
-  }
-  */
-//
 // name = javawebapp
 // ns = dev/qa/prod
 // tag = image's tag
@@ -268,5 +255,3 @@ spec:
     }
 
 }
-
-//            helm delete $name
