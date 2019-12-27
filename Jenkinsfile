@@ -119,74 +119,31 @@ spec:
 // deploy
 
 
-//Deploy to Master (Dev and Prod)
-// DEV release
-
-        if ( isMaster() ) {
-           stage('Deploy DEV release') {
+        if ( isChangeSet()  ) {
+            stage('Deploy PROD release') {
+                echo "Production release controlled by a change to production-release.txt file in application repository root,"
+                echo "containing a git tag that should be released to production environment"
+                tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
+                deployHelm("javawebapp-prod","prod",tagDockerImage)
+                                    // image tag from file production-release.txt , namespace , name chart release
+            }
+        }
+        else if ( isMaster() ) {
+            stage('Deploy DEV release') {
                 echo "Every commit to master branch is a dev release"
                 echo "Deploy Dev release after commit to master"
                 deployHelm("javawebapp-dev","dev",env.BRANCH_NAME)
-           }
-        } // end of Master block
-
-/*
-// PROD release
-            if ( isChangeSet()  ) {
-
-              stage('Deploy PROD release') {
-                  echo "Production release controlled by a change to production-release.txt file in application repository root,"
-                  echo "containing a git tag that should be released to production environment"
-
-                  tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
-                  //? need check is tag exist
-
-                  deployHelm("javawebapp-prod","prod",tagDockerImage)
-                              // image tag from file production-release.txt , namespace , name chart release
-
-              } //stage
+            }
         }
-
-
-
-*/
-
-// PROD release
-              if ( isMaster() ) {
-                  if ( isChangeSet()  ) {
-                    stage('Deploy PROD release') {
-                        echo "Production release controlled by a change to production-release.txt file in application repository root,"
-                        echo "containing a git tag that should be released to production environment"
-                        tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
-                        //? need check is tag exist
-                        deployHelm("javawebapp-prod","prod",tagDockerImage)
-                                    // image tag from file production-release.txt , namespace , name chart release
-                    } //stage
-              }
-            } // end of Master block
-
-//return 0
-
-
-//Deploy QA with tag
-            if ( isBuildingTag() ){
-              stage('Deploy QA release') {
-                  echo "Every git tag on a master branch is a QA release"
-
-                  deployHelm( "javawebapp-qa",                      // name chart release
-                              "qa",                           // namespace
-                              env.BRANCH_NAME )               // image tag = 0.0.1
-
-                          }
-
-                      // integrationTest
-                      // stage('approve'){ input "OK to go?" }
-                      }
-
-
+        else if ( isBuildingTag() ){
+// add check if it master
+            stage('Deploy QA release') {
+                echo "Every git tag on a master branch is a QA release"
+                deployHelm( "javawebapp-qa","qa",env.BRANCH_NAME )
+            }
+        }
     } // node
   } //podTemplate
-
 
 
   // is it push to Master branch?
@@ -199,8 +156,7 @@ spec:
   }
 
   def isBuildingTag() {
-      // add check that  is branch master?
-      return ( env.BRANCH_NAME ==~ /^\d.\d.\dd$/ )
+      return ( env.BRANCH_NAME ==~ /^\d.\d.\d$/ )
   }
 
   def isPushtoFeatureBranch() {
