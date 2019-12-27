@@ -27,13 +27,14 @@ This is CI/CD project realized using Jenkins
 
 
 * test line 1
+* test line 2
 
 
 # Demo
 
-1. git checkout -b feature-9
-2. Do some changes (v+1 for app)
-3. git add .
+1. git checkout -b feature-9 (create new branch)
+2. Do some changes (create next version for the app)
+3. git add . && git commit -m "feature 9"
 4. git push origin feature-9
 5. Check if new docker image been created (fizz-buzz:feature-9)
 6. Go to GitHub and create PR
