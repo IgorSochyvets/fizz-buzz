@@ -121,7 +121,7 @@ spec:
 
 //Deploy to Master (Dev and Prod)
 // DEV release
-
+/*
         if ( isMaster() ) {
            stage('Deploy DEV release') {
                 echo "Every commit to master branch is a dev release"
@@ -129,7 +129,7 @@ spec:
                 deployHelm("javawebapp-dev","dev",env.BRANCH_NAME)
            }
         } // end of Master block
-
+*/
 /*
 // PROD release
             if ( isChangeSet()  ) {
