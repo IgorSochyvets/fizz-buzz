@@ -64,7 +64,7 @@ spec:
         checkout scm
         sh 'git rev-parse HEAD > GIT_COMMIT'
         shortCommit = readFile('GIT_COMMIT').take(7)
-        sh 'echo "${shortCommit}"'
+        sh 'echo ${shortCommit}'
 
       }
 
