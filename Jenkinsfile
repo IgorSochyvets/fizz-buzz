@@ -62,7 +62,7 @@ spec:
 
       stage('Checkout SCM') {
         checkout scm
-        sh 'git rev-parse HEAD | cut -c1-7 > GIT_COMMIT'
+        sh 'git rev-parse HEAD > GIT_COMMIT'
         tagShortCommit = "${sh(script:'cat GIT_COMMIT',returnStdout: true)}"
         sh 'echo ${tagShortCommit}'
       }
