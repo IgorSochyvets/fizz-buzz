@@ -62,8 +62,8 @@ spec:
 
       stage('Checkout SCM') {
         checkout scm
-        GIT_COMMIT_SHORT = sh(script: "printf \$(git rev-parse --short ${GIT_COMMIT})",returnStdout: true)
-        sh 'echo ${tagShortCommit}'
+        commitId = sh(returnStdout: true, script: 'git rev-parse HEAD')
+        sh 'echo $commitId'
       }
 
 
