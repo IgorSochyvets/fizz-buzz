@@ -62,6 +62,7 @@ spec:
 
       stage('Checkout SCM') {
         checkout scm
+        sh 'echo GIT_SHA_SHORT=`git rev-parse --short=8 ${GIT_COMMIT}`'
       }
 
 /* uncomment if you need separate Tests
@@ -90,11 +91,9 @@ spec:
         container('docker') {
         if ( isMaster() ) {
              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-
-               sh  'echo "test2  ${GIT_COMMIT.take(7)}"'
                sh  'echo "Create Docker image: ${DOCKERHUB_IMAGE}:${shortCommit}"'
                sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
-               sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${GIT_COMMIT.take(7)} .'
+               sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}  .'
               }
 
           }
