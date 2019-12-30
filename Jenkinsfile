@@ -65,6 +65,7 @@ spec:
         sh 'git rev-parse HEAD > GIT_COMMIT'
         tagShortCommit = "${sh(script:'cat GIT_COMMIT',returnStdout: true)}"
         sh 'echo ${tagShortCommit}'
+
       }
 
 //        sh 'echo GIT_SHA_SHORT=`git rev-parse --short=8 ${GIT_COMMIT}`'
