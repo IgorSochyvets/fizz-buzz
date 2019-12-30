@@ -1,3 +1,4 @@
+
 #!/usr/bin/env groovy
 
 env.DOCKERHUB_IMAGE = 'fizz-buzz'
@@ -58,19 +59,12 @@ spec:
     node(label) {
 
       def tagDockerImage
+      def nameStage
+
       stage('Checkout SCM') {
         checkout scm
       }
-
 /*
-      sh 'git rev-parse HEAD > GIT_COMMIT'
-      shortCommit = readFile('GIT_COMMIT').take(7)
-      echo "short tag: ${shortCommit}"
-*/
-
-//        sh 'echo GIT_SHA_SHORT=`git rev-parse --short=8 ${GIT_COMMIT}`'
-
-/* uncomment if you need separate Tests
       stage('Unit Tests') {
         container('maven') {
           sh "mvn test" ;
@@ -83,28 +77,25 @@ spec:
           }
         }
 
-
 // Docker Image Building
         // Environment variables DOCKERHUB_USER, DOCKERHUB_IMAGE
         // var info from Jenkins plugins:
+        // BRANCH_NAME = master  - master branch
         // BRANCH_NAME = PR-1    - pull request
         // BRANCH_NAME = develop - other branch
         // BRANCH_NAME = v0.0.1  - git tag
-        // shortCommit for master branch (DEV release)
+        //
     stage('Docker build') {
+
       if  ( !isChangeSet() ) {
-        container('docker') {
-          withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-            if ( isMaster() ) {
-               echo "Build docker image with tag ${shortCommit}"
-               sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}  .'
-             }
-            else {
-                sh  'echo "Create Docker image: ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"'
-                sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
+            container('docker') {
+             withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+               sh  'echo "Create Docker image: ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"'
+               sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
+               sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
+              }
             }
-        }
-        }
+
       }
     }
 
@@ -115,6 +106,7 @@ spec:
         }
 
 // push docker image for all other cases (except PR)
+
     if  ( !isChangeSet() ) {
         stage ('Docker push') {
             container('docker') {
@@ -208,7 +200,6 @@ spec:
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
             echo "Deployments is starting..."
-
             helm upgrade --install $name --debug ./javawebapp-chart \
             --force \
             --wait \
@@ -218,7 +209,6 @@ spec:
             --set-string ingress.tls[0].hosts[0]=${name}.ddns.net \
             --set-string ingress.tls[0].secretName=acme-$name-tls \
             --set image.tag=$tag
-
             helm ls
         """
 
