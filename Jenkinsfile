@@ -62,8 +62,11 @@ spec:
 
       stage('Checkout SCM') {
         checkout scm
+        sh 'git rev-parse HEAD > GIT_COMMIT'
+        shortCommit = readFile('GIT_COMMIT').take(7)
       }
-/*
+
+/* uncomment if you need separate Tests
       stage('Unit Tests') {
         container('maven') {
           sh "mvn test" ;
@@ -76,31 +79,33 @@ spec:
           }
         }
 
-        stage('TEST GIT_COMMIT') {
-          container('docker') {
-            sh "echo env.GIT_COMMIT.take(7)"
-            }
-          }
 
 // Docker Image Building
         // Environment variables DOCKERHUB_USER, DOCKERHUB_IMAGE
         // var info from Jenkins plugins:
-        // BRANCH_NAME = master  - master branch
         // BRANCH_NAME = PR-1    - pull request
         // BRANCH_NAME = develop - other branch
         // BRANCH_NAME = v0.0.1  - git tag
-        //
+        // shortCommit for master branch (DEV release)
     stage('Docker build') {
-
       if  ( !isChangeSet() ) {
-            container('docker') {
+        container('docker') {
+        if ( isMaster() ) {
              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
                sh  'echo "Create Docker image: ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"'
                sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
-               sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
+               sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${shortCommit} .'
               }
-            }
 
+          }
+        else if {
+           withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+             sh  'echo "Create Docker image: ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"'
+             sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
+             sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
+            }
+        }
+        }
       }
     }
 
@@ -111,7 +116,6 @@ spec:
         }
 
 // push docker image for all other cases (except PR)
-
     if  ( !isChangeSet() ) {
         stage ('Docker push') {
             container('docker') {
