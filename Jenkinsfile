@@ -58,8 +58,6 @@ spec:
     node(label) {
 
       def tagDockerImage
-      def tagShortCommit
-      def commitId
 
       stage('Checkout SCM') {
         checkout scm
@@ -99,7 +97,6 @@ spec:
         if ( isMaster() ) {
              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
                echo "Build docker image with tag ${shortCommit}"
-               sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
                sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${shortCommit}  .'
               }
 
@@ -107,7 +104,6 @@ spec:
         else
            withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
              sh  'echo "Create Docker image: ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"'
-             sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
              sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
             }
         }
