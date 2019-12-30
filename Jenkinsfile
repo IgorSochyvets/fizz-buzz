@@ -76,13 +76,13 @@ spec:
           sh "mvn test" ;
           }
         }
-
+*/
       stage('Building Application') {
         container('maven') {
           sh "mvn install"
           }
         }
-*/
+
 
 // Docker Image Building
         // Environment variables DOCKERHUB_USER, DOCKERHUB_IMAGE
@@ -96,7 +96,7 @@ spec:
         container('docker') {
         if ( isMaster() ) {
                echo "Build docker image with tag ${shortCommit}"
-               sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}  .'        
+               sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${shortCommit}  .'        
           }
         else
            withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
