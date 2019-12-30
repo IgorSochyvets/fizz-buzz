@@ -72,13 +72,13 @@ spec:
           sh "mvn test" ;
           }
         }
-*/
+
       stage('Building Application') {
         container('maven') {
           sh "mvn install"
           }
         }
-
+*/
 
 // Docker Image Building
         // Environment variables DOCKERHUB_USER, DOCKERHUB_IMAGE
@@ -92,6 +92,9 @@ spec:
         container('docker') {
         if ( isMaster() ) {
              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+               sh  'echo "test1  $env.GIT_COMMIT.take(7)" '
+               sh  'echo "test2  ${shortCommit}"'
+               sh  'printf \$(git rev-parse --short ${GIT_COMMIT})'
                sh  'echo "Create Docker image: ${DOCKERHUB_IMAGE}:${shortCommit}"'
                sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
                sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${shortCommit} .'
