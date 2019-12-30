@@ -63,13 +63,9 @@ spec:
 
       stage('Checkout SCM') {
         checkout scm
-        commitId = sh(returnStdout: true, script: 'git rev-parse HEAD')
-        sh 'echo $commitId'
-
-        sh "git rev-parse --short HEAD > .git/commit-id"
+        sh 'git rev-parse --short HEAD > .git/commit-id'
         commit_id = readFile('.git/commit-id')
-        sh 'echo $commitId'
-
+        sh 'echo ${commitId}'
       }
 
 
