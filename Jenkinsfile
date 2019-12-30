@@ -63,18 +63,24 @@ spec:
       stage('Checkout SCM') {
         checkout scm
       }
-
+/*
       stage('Unit Tests') {
         container('maven') {
           sh "mvn test" ;
           }
         }
-
+*/
       stage('Building Application') {
         container('maven') {
           sh "mvn install"
           }
         }
+
+        stage('TEST GIT_COMMIT') {
+          container('docker') {
+            sh "echo env.GIT_COMMIT.take(7)"
+            }
+          }
 
 // Docker Image Building
         // Environment variables DOCKERHUB_USER, DOCKERHUB_IMAGE
