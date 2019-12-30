@@ -62,11 +62,11 @@ spec:
 
       stage('Checkout SCM') {
         checkout scm
-        sh 'git rev-parse HEAD > GIT_COMMIT'
-        tagShortCommit = "${sh(script:'cat GIT_COMMIT',returnStdout: true)}"
+        GIT_COMMIT_SHORT = sh(script: "printf \$(git rev-parse --short ${GIT_COMMIT})",returnStdout: true)
         sh 'echo ${tagShortCommit}'
-
       }
+
+
 
 //        sh 'echo GIT_SHA_SHORT=`git rev-parse --short=8 ${GIT_COMMIT}`'
 
