@@ -63,7 +63,7 @@ spec:
       stage('Checkout SCM') {
         checkout scm
         sh 'git rev-parse HEAD > GIT_COMMIT'
-        shortCommit = readFile('GIT_COMMIT').take(7)
+        shortCommit=readFile('GIT_COMMIT').take(7)
       }
 
 /* uncomment if you need separate Tests
@@ -92,7 +92,7 @@ spec:
         container('docker') {
         if ( isMaster() ) {
              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-               sh  'echo "Create Docker image: ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"'
+               sh  'echo "Create Docker image: ${DOCKERHUB_IMAGE}:${shortCommit}"'
                sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
                sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${shortCommit} .'
               }
