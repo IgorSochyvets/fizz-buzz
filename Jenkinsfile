@@ -63,9 +63,9 @@ spec:
 
       stage('Checkout SCM') {
         checkout scm
-        sh 'git rev-parse --short HEAD > .git/commit-id'
-        commit_id = readFile('.git/commit-id')
-        sh 'echo ${commitId}'
+        sh 'git rev-parse HEAD > GIT_COMMIT'
+        shortCommit = readFile('GIT_COMMIT').take(7)
+        echo " tag ${shortCommit}"
       }
 
 
