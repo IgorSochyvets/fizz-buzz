@@ -58,15 +58,15 @@ spec:
     node(label) {
 
       def tagDockerImage
-
       stage('Checkout SCM') {
         checkout scm
-        sh 'git rev-parse HEAD > GIT_COMMIT'
-        shortCommit = readFile('GIT_COMMIT').take(7)
-        echo "short tag: ${shortCommit}"
       }
 
-
+/*
+      sh 'git rev-parse HEAD > GIT_COMMIT'
+      shortCommit = readFile('GIT_COMMIT').take(7)
+      echo "short tag: ${shortCommit}"
+*/
 
 //        sh 'echo GIT_SHA_SHORT=`git rev-parse --short=8 ${GIT_COMMIT}`'
 
