@@ -32,7 +32,7 @@ spec:
     - cat
     tty: true
   - name: kubectl
-    image: lachlanevenson/k8s-kubectl:v1.8.8
+    image: lachlanevenson/k8s-kubectl:latest
     command:
     - cat
     tty: true
@@ -54,6 +54,8 @@ spec:
     tty: true
 """
   ){
+
+//kubectl lachlanevenson/k8s-kubectl:v1.8.8
 
     node(label) {
 
