@@ -130,7 +130,7 @@ spec:
                 echo "Production release controlled by a change to production-release.txt file in application repository root,"
                 echo "containing a git tag that should be released to production environment"
                 tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
-                deployHelm("javawebapp-prod","prod",tagDockerImage)
+                deployHelm("javawebapp-prod2","prod",tagDockerImage)
                                     // image tag from file production-release.txt , namespace , name chart release
             }
         }
@@ -138,14 +138,14 @@ spec:
             stage('Deploy DEV release') {
                 echo "Every commit to master branch is a dev release"
                 echo "Deploy Dev release after commit to master"
-                deployHelm("javawebapp-dev","dev",env.BRANCH_NAME)
+                deployHelm("javawebapp-dev2","dev",env.BRANCH_NAME)
             }
         }
         else if ( isBuildingTag() ){
 // add check if it master
             stage('Deploy QA release') {
                 echo "Every git tag on a master branch is a QA release"
-                deployHelm( "javawebapp-qa","qa",env.BRANCH_NAME )
+                deployHelm( "javawebapp-qa2","qa",env.BRANCH_NAME )
             }
         }
     } // node
@@ -204,9 +204,9 @@ spec:
             --wait \
             --namespace $ns \
             --set image.repository=$DOCKERHUB_USER/$DOCKERHUB_IMAGE \
-            --set-string ingress.hosts[0].host=${name}2.ddns.net \
-            --set-string ingress.tls[0].hosts[0]=${name}2.ddns.net \
-            --set-string ingress.tls[0].secretName=acme-${name}2-tls \
+            --set-string ingress.hosts[0].host=${name}.ddns.net \
+            --set-string ingress.tls[0].hosts[0]=${name}.ddns.net \
+            --set-string ingress.tls[0].secretName=acme-${name}-tls \
             --set image.tag=$tag
             helm ls
         """
