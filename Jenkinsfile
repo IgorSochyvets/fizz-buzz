@@ -32,7 +32,7 @@ spec:
     - cat
     tty: true
   - name: kubectl
-    image: lachlanevenson/k8s-kubectl:latest
+    image: lachlanevenson/k8s-kubectl:v1.8.8
     command:
     - cat
     tty: true
@@ -201,7 +201,6 @@ spec:
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
             echo "Deployments is starting..."
-            kubectl get ns
             helm upgrade --install $name --debug ./javawebapp-chart \
             --force \
             --wait \
