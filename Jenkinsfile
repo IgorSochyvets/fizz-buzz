@@ -199,6 +199,7 @@ spec:
         withKubeConfig([credentialsId: 'kubeconfig']) {
         sh """
             echo "Deployments is starting..."
+            kubectl get ns
             helm upgrade --install $name --debug ./javawebapp-chart \
             --force \
             --wait \
