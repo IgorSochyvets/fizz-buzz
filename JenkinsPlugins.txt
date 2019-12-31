@@ -17,7 +17,8 @@
 
 
 ### what are installed
-Ant Plugin
+Basic Branch Build Strategies !!!
+#Ant Plugin
 bouncycastle API
 ChuckNorris Plugin
 Command Agent Launcher
@@ -27,7 +28,7 @@ Git Parameter Plug-In
 Git Tag Message Plugin
 GitHub Branch Source Plugin
 GitHub Integration Plugin
-Gradle Plugin
+#Gradle Plugin
 Green Balls
 Kubernetes
 Kubernetes Cli Plugin
