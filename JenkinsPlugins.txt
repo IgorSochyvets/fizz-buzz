@@ -30,6 +30,7 @@ GitHub Branch Source Plugin
 GitHub Integration Plugin
 #Gradle Plugin
 Green Balls
+Kubernetes Credentials Provider !!!
 Kubernetes
 Kubernetes Cli Plugin
 Kubernetes Continuous Deploy Plugin
