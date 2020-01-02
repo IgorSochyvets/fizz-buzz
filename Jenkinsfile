@@ -65,6 +65,9 @@ spec:
         sh 'git rev-parse HEAD | cut -b 1-7 > GIT_COMMIT_SHORT'
         SHORT_COMMIT = readFile('GIT_COMMIT_SHORT')
         echo "Short Commit: ${SHORT_COMMIT}"
+
+        COMMIT=$(git rev-parse --short HEAD)
+        echo "Short 2 ${COMMIT}"
       }
 
 //
