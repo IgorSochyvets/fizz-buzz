@@ -177,7 +177,7 @@ spec:
             stage('Deploy DEV release') {
                 echo "Every commit to master branch is a dev release"
                 echo "Deploy Dev release after commit to master"
-                deployHelm("javawebapp-dev2","dev",env.BRANCH_NAME)
+                deployHelm("javawebapp-dev2","dev",tagDockerImage) // tagDockerImage <==> env.BRANCH_NAME
             }
         }
         else if ( isBuildingTag() ){
