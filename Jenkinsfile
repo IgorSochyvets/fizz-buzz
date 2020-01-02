@@ -62,7 +62,7 @@ spec:
 
       stage('Checkout SCM') {
         checkout scm
-        sh  'echo GIT_COMMIT %GIT_COMMIT% '
+        sh  'echo ${GIT_COMMIT} '
       }
 
       // sh  'echo GIT_SHA_SHORT=`git rev-parse --short=8 ${GIT_COMMIT}`'
