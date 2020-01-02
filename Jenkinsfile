@@ -103,11 +103,12 @@ spec:
       if  ( !isChangeSet() ) {
 
         if ( isMaster() ) {
-          tagDockerImage = ${SHORT_COMMIT}
+          tagDockerImage = "${SHORT_COMMIT}"
+
           sh 'echo ${tagDockerImage}' //testing
         }
         else {
-          tagDockerImage = ${BRANCH_NAME}
+          tagDockerImage = "${BRANCH_NAME}"
           sh 'echo ${tagDockerImage}' //testing
         }
 // if master then tagDockerImage = short_commit
