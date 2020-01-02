@@ -17,6 +17,7 @@
 
 
 ### what are installed
+Global Variable String Parameter
 Basic Branch Build Strategies !!!
 #Ant Plugin
 bouncycastle API
