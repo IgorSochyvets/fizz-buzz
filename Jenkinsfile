@@ -147,7 +147,7 @@ spec:
             container('docker') {
               withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh 'docker image ls'
-                    sh "docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME}" // <==>${BRANCH_NAME}
+                    sh "docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${tagDockerImage}" // ${tagDockerImage}<==>${BRANCH_NAME}
               }
             }
         }
