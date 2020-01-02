@@ -68,7 +68,7 @@ spec:
       }
 
 //
-// *** Test and build Java Web App 
+// *** Test and build Java Web App
 //
 
 /*
@@ -118,6 +118,11 @@ spec:
         }
 
 // push docker image for all other cases (except PR)
+
+    if ( isChangeSet() ) {
+        // exitAsSuccess()
+        return 0
+    }
 
     if  ( !isChangeSet() ) {
         stage ('Docker push') {
