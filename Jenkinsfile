@@ -65,6 +65,8 @@ spec:
         sh 'git rev-parse HEAD > GIT_COMMIT'
         shortCommit = readFile('GIT_COMMIT').take(7)
         sh 'cat GIT_COMMIT'
+        sh 'echo ${shortCommit}'
+
       }
 
       // sh  'echo GIT_SHA_SHORT=`git rev-parse --short=8 ${GIT_COMMIT}`'
