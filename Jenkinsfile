@@ -103,7 +103,7 @@ spec:
       if  ( !isChangeSet() ) {
 
         if ( isMaster() ) {
-          echo "Short Commit: ${SHORT_COMMIT}"
+          sh 'echo "Short Commit: ${SHORT_COMMIT}"'
           tagDockerImage = "${SHORT_COMMIT}"
 
           sh 'echo ${tagDockerImage}' //testing
