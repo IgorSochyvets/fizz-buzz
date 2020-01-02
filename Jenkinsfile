@@ -89,23 +89,24 @@ spec:
 // *** Docker Image Building
 //
         // Environment variables DOCKERHUB_USER, DOCKERHUB_IMAGE
-        // var info from Jenkins plugins:
+        // var info from Jenkins plugins / All states for IF:
         // BRANCH_NAME = master  - master branch
         // BRANCH_NAME = PR-1    - pull request
         // BRANCH_NAME = develop - other branch
         // BRANCH_NAME = v0.0.1  - git tag
-        //
+        // change file to mark prod release
     stage('Docker build') {
-      if  ( !isChangeSet() ) {
-            container('docker') {
-             withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-               sh  'echo "Create Docker image: ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"'
-               sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
-               sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
-              }
-            }
-
+    container('docker') {
+      if ( isChangeSet() ) {
+          // exitAsSuccess()
+          return 0
       }
+      withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+        sh  'echo "Create Docker image: ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"'
+        sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
+        sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
+      }
+    }
     }
 
 //
@@ -118,6 +119,10 @@ spec:
         }
 
 // push docker image for all other cases (except PR)
+
+
+/// not finished
+// put stage outside if !!!
 
     if ( isChangeSet() ) {
         // exitAsSuccess()
