@@ -62,19 +62,23 @@ spec:
 
       stage('Checkout SCM') {
         checkout scm
+        sh  'echo GIT_SHA_SHORT=`git rev-parse ${GIT_COMMIT}`'
       }
+
+      // sh  'echo GIT_SHA_SHORT=`git rev-parse --short=8 ${GIT_COMMIT}`'
 /*
       stage('Unit Tests') {
         container('maven') {
           sh "mvn test" ;
           }
         }
-*/
+
       stage('Building Application') {
         container('maven') {
           sh "mvn install"
           }
         }
+*/
 
 // Docker Image Building
         // Environment variables DOCKERHUB_USER, DOCKERHUB_IMAGE
@@ -89,7 +93,6 @@ spec:
       if  ( !isChangeSet() ) {
             container('docker') {
              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-               sh  'echo GIT_SHA_SHORT=`git rev-parse --short=8 ${GIT_COMMIT}`'
                sh  'echo "Create Docker image: ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"'
                sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
                sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
