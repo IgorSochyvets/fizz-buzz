@@ -96,15 +96,30 @@ spec:
         // BRANCH_NAME = v0.0.1  - git tag
         // change file to mark prod release
     stage('Docker build') {
+
+// use    tagDockerImage
+
     container('docker') {
-      if ( isChangeSet() ) {
-          // exitAsSuccess()
-          return 0
+      if  ( !isChangeSet() ) {
+
+        if ( isMaster() ) {
+          tagDockerImage = ${SHORT_COMMIT}
+          sh 'echo ${tagDockerImage}' //testing
+        }
+        else {
+          tagDockerImage = ${BRANCH_NAME}
+          sh 'echo ${tagDockerImage}' //testing
+        }
+// if master then tagDockerImage = short_commit
+//else   tagDockerImage = branch_name
+        withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+          sh  'echo "Create Docker image: ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"'
+          sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
+          sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${tagDockerImage} .'
       }
-      withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-        sh  'echo "Create Docker image: ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"'
-        sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
-        sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
+
+
+
       }
     }
     }
