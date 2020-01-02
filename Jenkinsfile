@@ -89,7 +89,7 @@ spec:
       if  ( !isChangeSet() ) {
             container('docker') {
              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-               sh  'echo "short commit: ${GIT_REVISION:0:7}"'
+               sh  'echo GIT_SHA_SHORT=`git rev-parse --short=8 ${GIT_COMMIT}`'
                sh  'echo "Create Docker image: ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"'
                sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
                sh  'docker build -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${BRANCH_NAME} .'
