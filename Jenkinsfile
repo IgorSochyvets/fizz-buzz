@@ -103,8 +103,7 @@ spec:
       if  ( !isChangeSet() ) {
 
         if ( isMaster() ) {
-//          tagDockerImage = readFile('GIT_COMMIT_SHORT')
-          tagDockerImage =${SHORT_COMMIT}
+          tagDockerImage = readFile('GIT_COMMIT_SHORT')        
           echo  "echo ${tagDockerImage}" //testing
         }
         else {
