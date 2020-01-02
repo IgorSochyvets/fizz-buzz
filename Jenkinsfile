@@ -116,7 +116,7 @@ spec:
         withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
           sh  'echo "Create Docker image: ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"'
           sh  'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
-          sh  'docker build . -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${tagDockerImage}'
+          sh  'docker build . -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:tagDockerImage'
       }
 
 
