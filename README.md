@@ -28,7 +28,8 @@ This is CI/CD project realized using Jenkins
 
 * test line 1
 * test line 2
-* this is from feature 8
+* this is from branch feature-8
+
 
 # Demo
 
