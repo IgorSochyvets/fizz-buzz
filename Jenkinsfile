@@ -104,9 +104,8 @@ spec:
 
         if ( isMaster() ) {
           echo "Short Commit: ${SHORT_COMMIT}"
-          tagDockerImage = "${SHORT_COMMIT}"
-
-          sh 'echo ${tagDockerImage}' //testing
+          tagDockerImage = readFile('GIT_COMMIT_SHORT')
+          echo  "echo ${tagDockerImage}" //testing
         }
         else {
           tagDockerImage = "${BRANCH_NAME}"
