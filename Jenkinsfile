@@ -103,17 +103,17 @@ spec:
       if  ( !isChangeSet() ) {
 
         if ( isMaster() ) {
-          tagDockerImage = readFile('GIT_COMMIT_SHORT')        
-          echo  "echo ${tagDockerImage}" //testing
+          tagDockerImage = readFile('GIT_COMMIT_SHORT')
+          echo  "From Short ${tagDockerImage}" //testing
         }
         else {
           tagDockerImage = "${BRANCH_NAME}"
-          sh 'echo ${tagDockerImage}' //testing
+          echo  "From Short ${tagDockerImage}" //testing
         }
 // if master then tagDockerImage = short_commit
 //else   tagDockerImage = branch_name
         withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-          sh 'echo "Create Docker image: ${DOCKERHUB_IMAGE}:${BRANCH_NAME}"'
+          sh 'echo "Create Docker image: ${DOCKERHUB_IMAGE}:${tagDockerImage}"'
           sh 'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
           sh "docker build . -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${tagDockerImage}"
       }
