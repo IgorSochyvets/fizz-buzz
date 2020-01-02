@@ -62,9 +62,8 @@ spec:
 
       stage('Checkout SCM') {
         checkout scm
-        sh 'git rev-parse HEAD | cut -b 1-7 > GIT_COMMIT'
-
-        sh 'cat GIT_COMMIT'
+        sh 'git rev-parse HEAD | cut -b 1-7 > GIT_COMMIT_SHORT'
+        sh 'cat GIT_COMMIT_SHORT'
 
 
       }
