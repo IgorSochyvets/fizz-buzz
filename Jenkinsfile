@@ -64,6 +64,7 @@ spec:
         checkout scm
         sh 'git rev-parse HEAD | cut -b 1-7 > GIT_COMMIT_SHORT'
         sh 'cat GIT_COMMIT_SHORT'
+        shortCommit = readFile('GIT_COMMIT_SHORT')
 
 
       }
