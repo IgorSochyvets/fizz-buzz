@@ -27,12 +27,6 @@ This is CI/CD project realized using Jenkins
 
 
 * test line 1
-<<<<<<< HEAD
-=======
-* test line 2
-* test line 3
-* test line 4
->>>>>>> c653a3e5503f0d1d07afa6ce2084c77368dd7040
 
 
 # Demo
