@@ -78,12 +78,13 @@ spec:
           }
         }
 
+*/
       stage('Building Application') {
         container('maven') {
           sh "mvn install"
           }
         }
-*/
+
 
 //
 // *** Docker Image Building
