@@ -62,10 +62,10 @@ spec:
 
       stage('Checkout SCM') {
         checkout scm
-        sh 'git rev-parse HEAD > GIT_COMMIT'
-        shortCommit = readFile('GIT_COMMIT').take(7)
+        sh 'git rev-parse HEAD | cut -b 1-7 > GIT_COMMIT'
+
         sh 'cat GIT_COMMIT'
-        sh 'echo ${shortCommit}'
+
 
       }
 
