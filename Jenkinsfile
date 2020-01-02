@@ -114,7 +114,7 @@ spec:
 //else   tagDockerImage = branch_name
         withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
           echo "Create Docker image: ${DOCKERHUB_IMAGE}:${tagDockerImage}"
-          sh 'docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}'
+          sh "docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}"
           sh "docker build . -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${tagDockerImage}"
       }
       }
