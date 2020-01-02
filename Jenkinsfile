@@ -67,7 +67,10 @@ spec:
         echo "Short Commit: ${SHORT_COMMIT}"
       }
 
-      // sh  'echo GIT_SHA_SHORT=`git rev-parse --short=8 ${GIT_COMMIT}`'
+//
+// *** Test and build Java Web App 
+//
+
 /*
       stage('Unit Tests') {
         container('maven') {
@@ -82,7 +85,9 @@ spec:
         }
 */
 
-// Docker Image Building
+//
+// *** Docker Image Building
+//
         // Environment variables DOCKERHUB_USER, DOCKERHUB_IMAGE
         // var info from Jenkins plugins:
         // BRANCH_NAME = master  - master branch
@@ -91,7 +96,6 @@ spec:
         // BRANCH_NAME = v0.0.1  - git tag
         //
     stage('Docker build') {
-
       if  ( !isChangeSet() ) {
             container('docker') {
              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
@@ -104,6 +108,9 @@ spec:
       }
     }
 
+//
+// *** Docker Image Push
+//
 // do not push docker image for PR
         if ( isPullRequest() ) {
             // exitAsSuccess()
@@ -123,13 +130,16 @@ spec:
         }
     }
 
+
+//
+// *** Helm Deploy
+//
+
 // do not deploy when 'push to branch' (and PR)
         if ( isPushtoFeatureBranch() ) {
                 // exitAsSuccess()
                 return 0
         }
-
-// deploy
 
         if ( isChangeSet()  ) {
             stage('Deploy PROD release') {
@@ -157,6 +167,10 @@ spec:
     } // node
   } //podTemplate
 
+
+//
+// *** Functions
+//
 
   // is it push to Master branch?
   def isMaster() {
@@ -194,12 +208,12 @@ spec:
       return false
   }
 
-
+//
+// Deployment function
+//
 // name = javawebapp
 // ns = dev/qa/prod
 // tag = image's tag
-
-// !! need to change deployment version or label in order to re-deploy pod
   def deployHelm(name, ns, tag) {
      container('helm') {
         withKubeConfig([credentialsId: 'kubeconfig']) {
@@ -216,8 +230,6 @@ spec:
             --set image.tag=$tag
             helm ls
         """
-
         }
     }
-
-}
+  }
