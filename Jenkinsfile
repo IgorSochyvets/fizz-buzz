@@ -96,10 +96,8 @@ spec:
         // BRANCH_NAME = develop - other branch  / feature develop   / tag=<branch_name>
         // BRANCH_NAME = v0.0.1  - git tag       / It is QA release  / tag=short_commit (the same image from dev release)
         // change file to mark prod release      /It is PROD release / tag=short_commit
+        // do docker buils for all cases except "prod" release = !isChangeset
     stage('Docker build') {
-
-// use    tagDockerImage
-// do docker buils for all cases except "prod" release = !isChangeset
     container('docker') {
       if  ( !isChangeSet() ) {
         if ( isMaster() ) {
@@ -124,23 +122,19 @@ spec:
 //
 // *** Docker Image Push
 //
-// do not push docker image for PR
-        if ( isPullRequest() ) {
-            // exitAsSuccess()
-            return 0
-        }
-
-// push docker image for all other cases (except PR)
-
-
-/// not finished
-// put stage outside if !!!
-
-    if ( isChangeSet() ) {
-        // exitAsSuccess()
-        return 0
+// push docker image for all other cases (except PR & Prod)
+    if ( isPullRequest() ) {
+      // exitAsSuccess()
+      return 0
     }
 
+  /*
+    if ( isChangeSet() ) {
+        // exitAsSuccess()
+      return 0
+    }
+  */
+  
     if  ( !isChangeSet() ) {
         stage ('Docker push') {
             container('docker') {
