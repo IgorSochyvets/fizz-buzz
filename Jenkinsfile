@@ -134,7 +134,7 @@ spec:
       return 0
     }
   */
-  
+
     if  ( !isChangeSet() ) {
         stage ('Docker push') {
             container('docker') {
@@ -163,7 +163,6 @@ spec:
                 echo "containing a git tag that should be released to production environment"
                 tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
                 deployHelm("javawebapp-prod2","prod",tagDockerImage)
-                                    // image tag from file production-release.txt , namespace , name chart release
             }
         }
         else if ( isMaster() ) {
