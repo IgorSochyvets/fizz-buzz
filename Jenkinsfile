@@ -70,27 +70,21 @@ spec:
 //
 // *** Test and build Java Web App
 //
-
-/*
       stage('Unit Tests') {
         container('maven') {
           sh "mvn test" ;
           }
         }
 
-*/
       stage('Building Application') {
         container('maven') {
           sh "mvn install"
           }
         }
-
-
 //
 // *** Docker Image Building
 //
-        // Desctoption of app's logic
-        // var info from Jenkins plugins / All states for IF:
+        // Description of app's logic
         // BRANCH_NAME = master  - master branch / It is DEV release / tag=short_commit
         // BRANCH_NAME = PR-1    - pull request  / It is PR request  / tag=PR-1 /
         // BRANCH_NAME = develop - other branch  / feature develop   / tag=<branch_name>
@@ -122,29 +116,29 @@ spec:
 //
 // *** Docker Image Push
 //
+
 // push docker image for all other cases (except PR & Prod)
     if ( isPullRequest() ) {
       // exitAsSuccess()
       return 0
     }
 
-  /*
-    if ( isChangeSet() ) {
-        // exitAsSuccess()
-      return 0
-    }
-  */
 
-    if  ( !isChangeSet() ) {
-        stage ('Docker push') {
-            container('docker') {
-              withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh 'docker image ls'
-                    sh "docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${tagDockerImage}" // ${tagDockerImage}<==>${BRANCH_NAME}
-              }
-            }
+  //  if  ( !isChangeSet() ) {
+
+    stage ('Docker push') {
+      container('docker') {
+        if  ( !isChangeSet() ) {
+          
+        withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+          sh 'docker image ls'
+          sh "docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${tagDockerImage}" // ${tagDockerImage}<==>${BRANCH_NAME}
         }
+        }
+      }
+
     }
+  //  }
 
 
 //
