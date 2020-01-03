@@ -206,6 +206,17 @@ spec:
 
   def isChangeSet() {
 
+    currentBuild.changeSets.any { changeSet ->
+          changeSet.items.any { entry ->
+            entry.affectedFiles.any { file ->
+              if (file.path.equals("production-release.txt")) {
+                return true
+              }
+            }
+          }
+        }
+
+/* old version
       def changeLogSets = currentBuild.changeSets
              for (int i = 0; i < changeLogSets.size(); i++) {
              def entries = changeLogSets[i].items
@@ -219,7 +230,7 @@ spec:
                  }
               }
       }
-
+*/
       return false
   }
 
