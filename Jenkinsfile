@@ -89,7 +89,7 @@ spec:
 //
 // *** Docker Image Building
 //
-        // Environment variables DOCKERHUB_USER, DOCKERHUB_IMAGE
+        // Desctoption of app's logic
         // var info from Jenkins plugins / All states for IF:
         // BRANCH_NAME = master  - master branch / It is DEV release / tag=short_commit
         // BRANCH_NAME = PR-1    - pull request  / It is PR request  / tag=PR-1 /
