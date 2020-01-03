@@ -91,21 +91,20 @@ spec:
 //
         // Environment variables DOCKERHUB_USER, DOCKERHUB_IMAGE
         // var info from Jenkins plugins / All states for IF:
-        // BRANCH_NAME = master  - master branch
-        // BRANCH_NAME = PR-1    - pull request
-        // BRANCH_NAME = develop - other branch
-        // BRANCH_NAME = v0.0.1  - git tag
-        // change file to mark prod release
+        // BRANCH_NAME = master  - master branch / It is DEV release / tag=short_commit
+        // BRANCH_NAME = PR-1    - pull request  / It is PR request  / tag=PR-1 /
+        // BRANCH_NAME = develop - other branch  / feature develop   / tag=<branch_name>
+        // BRANCH_NAME = v0.0.1  - git tag       / It is QA release  / tag=short_commit (the same image from dev release)
+        // change file to mark prod release      /It is PROD release / tag=short_commit
     stage('Docker build') {
 
 // use    tagDockerImage
-
+// do docker buils for all cases except "prod" release = !isChangeset
     container('docker') {
       if  ( !isChangeSet() ) {
-
         if ( isMaster() ) {
           tagDockerImage = readFile('GIT_COMMIT_SHORT')
-          echo  "From Short ${tagDockerImage}" //testing
+          echo  "From Short ${tagDockerImage}" //use short commit for master
         }
         else {
           tagDockerImage = "${BRANCH_NAME}"
