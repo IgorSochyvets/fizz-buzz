@@ -67,6 +67,16 @@ spec:
         echo "Short Commit: ${SHORT_COMMIT}"
       }
 
+///Test trigger build
+      def keyNameOfParam2
+      keyNameOfParam2 = true
+      stage('Test trigger build') {
+        if (env.BRANCH_NAME == 'master') {
+          build job:'DeployJavaWebApp' , parameters:[
+          booleanParam(name: 'keyNameOfParam2',value:'true')
+          ]
+        }
+      }
 //
 // *** Test and build Java Web App
 //
