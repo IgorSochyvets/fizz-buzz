@@ -116,41 +116,31 @@ spec:
 //
 // *** Docker Image Push
 //
-
 // push docker image for all other cases (except PR & Prod)
-    if ( isPullRequest() ) {
-      // exitAsSuccess()
-      return 0
-    }
-
-
-  //  if  ( !isChangeSet() ) {
-
     stage ('Docker push') {
       container('docker') {
         if  ( !isChangeSet() ) {
-          
-        withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-          sh 'docker image ls'
-          sh "docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${tagDockerImage}" // ${tagDockerImage}<==>${BRANCH_NAME}
-        }
+          if ( isPullRequest() ) {
+            // exitAsSuccess()
+            return 0
+          }
+          else {
+            withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+              sh 'docker image ls'
+              sh "docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${tagDockerImage}" // ${tagDockerImage}<==>${BRANCH_NAME}
+            }
+          }
         }
       }
-
     }
-  //  }
-
-
 //
 // *** Helm Deploy
 //
-
 // do not deploy when 'push to branch' (and PR)
         if ( isPushtoFeatureBranch() ) {
                 // exitAsSuccess()
                 return 0
         }
-
         if ( isChangeSet()  ) {
             stage('Deploy PROD release') {
                 echo "Production release controlled by a change to production-release.txt file in application repository root,"
