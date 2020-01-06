@@ -101,8 +101,14 @@ stage('Triggering a remote Job') {
   container('docker') {
     echo "Triggering a remote Job"
 
-    triggerRemoteJob auth: CredentialsAuth(credentials: 'jenkinspass'), job: 'https://jenkins-75d947864d-8g9vx/job/IBM_Project/job/DeployJavaWebApp/', maxConn: 1, parameters: 'A=B', remoteJenkinsName: 'ThisJenkinsServer', useCrumbCache: true, useJobInfoCache: true
+    if (env.BRANCH_NAME == 'master') {
+  build job:'DeployJavaWebApp' , parameters:[
+    string(name: 'keyNameOfParam1',value: 'valueOfParam1')
+    booleanParam(name: 'keyNameOfParam2',value:'valueOfParam2')
+ ]
+}
 
+//    triggerRemoteJob auth: CredentialsAuth(credentials: 'jenkinspass'), job: 'https://jenkins-75d947864d-8g9vx/job/IBM_Project/job/DeployJavaWebApp/', maxConn: 1, parameters: 'A=B', remoteJenkinsName: 'ThisJenkinsServer', useCrumbCache: true, useJobInfoCache: true
 //    build(job: "DeployJavaWebApp")
 //    echo 'Remote Status: ' + handle.getBuildStatus().toString()
     }
