@@ -96,11 +96,11 @@ spec:
 
 //// TMP triggering a remote Job
 stage('Triggering a remote Job') {
-  def job
+  def job1
     echo "Triggering a remote Job"
 
     if (env.BRANCH_NAME == 'master') {
-  build job:'DeployJavaWebApp'
+  build job1:'DeployJavaWebApp'
 
 
 //    triggerRemoteJob auth: CredentialsAuth(credentials: 'jenkinspass'), job: 'https://jenkins-75d947864d-8g9vx/job/IBM_Project/job/DeployJavaWebApp/', maxConn: 1, parameters: 'A=B', remoteJenkinsName: 'ThisJenkinsServer', useCrumbCache: true, useJobInfoCache: true
