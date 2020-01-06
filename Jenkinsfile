@@ -103,8 +103,7 @@ stage('Triggering a remote Job') {
 
     if (env.BRANCH_NAME == 'master') {
   build job:'DeployJavaWebApp' , parameters:[
-    string(name: 'keyNameOfParam1',value: 'valueOfParam1')
-    booleanParam(name: 'keyNameOfParam2',value:'valueOfParam2')
+    string(name: 'keyNameOfParam1',value: 'valueOfParam1'))
  ]
 }
 
