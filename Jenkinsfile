@@ -95,15 +95,13 @@ spec:
 */
 
 //// TMP triggering a remote Job
-def handle = triggerRemoteJob job: 'https://jenkins-50-23-5-248.nip.io/job/IBM_Project/job/DeployJavaWebApp/'
-def job1
 stage('Triggering a remote Job') {
-  container('docker') {
+  def job1
     echo "Triggering a remote Job"
 
     if (env.BRANCH_NAME == 'master') {
   build job1:'DeployJavaWebApp'
-}
+
 
 //    triggerRemoteJob auth: CredentialsAuth(credentials: 'jenkinspass'), job: 'https://jenkins-75d947864d-8g9vx/job/IBM_Project/job/DeployJavaWebApp/', maxConn: 1, parameters: 'A=B', remoteJenkinsName: 'ThisJenkinsServer', useCrumbCache: true, useJobInfoCache: true
 //    build(job: "DeployJavaWebApp")
