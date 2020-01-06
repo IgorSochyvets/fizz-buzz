@@ -80,9 +80,10 @@ spec:
 //
 // *** Test and build Java Web App
 //
+/*
       stage('Unit Tests') {
         container('maven') {
-          sh "mvn test" ;
+          sh "mvn test"
           }
         }
 
@@ -91,6 +92,19 @@ spec:
           sh "mvn install"
           }
         }
+*/
+
+//// TMP triggering a remote Job
+def handle = triggerRemoteJob job: 'https://jenkins-50-23-5-248.nip.io/job/IBM_Project/job/DeployJavaWebApp/'
+
+stage('Triggering a remote Job') {
+  container('docker') {
+    echo "Triggering a remote Job"
+
+    echo 'Remote Status: ' + handle.getBuildStatus().toString()
+    }
+  }
+
 //
 // *** Docker Image Building
 //
