@@ -17,6 +17,7 @@
 
 
 ### what are installed
+Parameterized Remote Trigger ### for triggering remote job 
 Global Variable String Parameter
 Basic Branch Build Strategies !!!
 #Ant Plugin
