@@ -100,10 +100,12 @@ def handle = triggerRemoteJob job: 'https://jenkins-50-23-5-248.nip.io/job/IBM_P
 stage('Triggering a remote Job') {
   container('docker') {
     echo "Triggering a remote Job"
-
-    echo 'Remote Status: ' + handle.getBuildStatus().toString()
+    build(job: "DeployJavaWebApp")
+//    echo 'Remote Status: ' + handle.getBuildStatus().toString()
     }
   }
+
+
 
 //
 // *** Docker Image Building
