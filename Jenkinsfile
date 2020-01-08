@@ -77,14 +77,15 @@ spec:
           sh "mvn test"
           }
         }
-
+*/
       stage('Building Application') {
         container('maven') {
           sh "mvn install"
           }
         }
-*/
 
+
+/* working / tested
 //// TMP triggering a remote Job
 stage('Triggering a remote Job') {
   def job
@@ -92,7 +93,7 @@ stage('Triggering a remote Job') {
     echo "From Folder"
     build job:'IBM_Project/DeployJavaWebApp/master'
   }
-
+*/
 
 
 
@@ -148,6 +149,9 @@ stage('Triggering a remote Job') {
         }
       }
     }
+
+
+//  Put Deploy to different repo / project
 //
 // *** Helm Deploy
 //
@@ -178,6 +182,10 @@ stage('Triggering a remote Job') {
                 deployHelm( "javawebapp-qa2","qa",env.BRANCH_NAME )
             }
         }
+//
+
+
+
     } // node
   } //podTemplate
 
@@ -233,6 +241,8 @@ stage('Triggering a remote Job') {
       return false
   }
 
+
+//  Put Deploy to different repo / project
 //
 // Deployment function
 //
@@ -258,3 +268,5 @@ stage('Triggering a remote Job') {
         }
     }
   }
+
+//
