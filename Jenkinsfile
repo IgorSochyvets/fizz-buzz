@@ -184,7 +184,6 @@ stage('Triggering a remote Job') {
         }
 */
     def job // check if it is needed
-    TEST_VAR = "1.0"
     stage('Triggering Deploymant Job') {
   // do not deploy when 'push to branch' (and PR)
           if ( isPushtoFeatureBranch() ) {
@@ -196,7 +195,7 @@ stage('Triggering a remote Job') {
           // Dev - trigger Deploy repo with Parameters: tag = ShortCommit
           if ( isMaster() ) {
                   echo "Triggering DEPLOY repo with Parameters: tag = ShortCommit"
-                  build job:'IBM_Project/DeployJavaWebApp/master', parameters: [[$class: 'StringParameterValue', name: 'tagDockerImage', value: tagDockerImage]]
+                  build job:'IBM_Project/DeployJavaWebApp/master', parameters: [string(name: 'BRANCH_NAME1', value: env.BRANCH_NAME)]
           }
 
 
