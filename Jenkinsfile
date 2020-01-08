@@ -100,7 +100,7 @@ stage('Triggering a remote Job') {
     echo "Triggering a remote Job"
 
     if (env.BRANCH_NAME == 'master') {
-  build job1:'DeployJavaWebApp/master'
+  build job1:'IBM_Project/DeployJavaWebApp/master'
 
 
   //build job: 'pipeline1/master', parameters: [
