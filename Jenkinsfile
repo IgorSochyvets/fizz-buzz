@@ -99,6 +99,7 @@ stage('Triggering a remote Job') {
   def job1
     echo "Triggering a remote Job"
     echo "hello ${env.WORKSPACE}"
+    sh "ls ${env.WORKSPACE}"
 
 /*
     if (env.BRANCH_NAME == 'master') {
