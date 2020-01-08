@@ -98,6 +98,7 @@ spec:
 stage('Triggering a remote Job') {
   def job1
     echo "Triggering a remote Job"
+    echo "hello ${env.WORKSPACE}"
 
     if (env.BRANCH_NAME == 'master') {
   build job1:'IBM_Project/DeployJavaWebApp/master'
