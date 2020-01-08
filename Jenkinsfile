@@ -90,7 +90,7 @@ stage('Triggering a remote Job') {
   def job
     echo "Triggering a remote Job"
     echo "From Folder"
-    build job:'DeployJavaWebApp/master'
+    build job:'IBM_Project/DeployJavaWebApp/master'
   }
 
 
