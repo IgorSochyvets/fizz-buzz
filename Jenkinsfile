@@ -67,16 +67,7 @@ spec:
         echo "Short Commit: ${SHORT_COMMIT}"
       }
 
-///Test trigger build
-      def keyNameOfParam2
-      keyNameOfParam2 = true
-      stage('Test trigger build') {
-        if (env.BRANCH_NAME == 'master') {
-          build job:'DeployJavaWebApp' , parameters:[
-          booleanParam(name: 'keyNameOfParam2',value:'true')
-          ]
-        }
-      }
+
 //
 // *** Test and build Java Web App
 //
@@ -96,11 +87,13 @@ spec:
 
 //// TMP triggering a remote Job
 stage('Triggering a remote Job') {
-  def job1
+  def job
     echo "Triggering a remote Job"
     echo "hello ${env.WORKSPACE}"
     sh "ls ${env.WORKSPACE}"
+    build job:'DeployJavaWebApp'
   }
+
 
 
 
