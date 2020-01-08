@@ -100,7 +100,12 @@ stage('Triggering a remote Job') {
     echo "Triggering a remote Job"
 
     if (env.BRANCH_NAME == 'master') {
-  build job1:'DeployJavaWebApp'
+  build job1:'DeployJavaWebApp/master'
+
+
+  //build job: 'pipeline1/master', parameters: [
+  //      string(name: 'param1', value: "value1")
+  //      ]
 
 
 //    triggerRemoteJob auth: CredentialsAuth(credentials: 'jenkinspass'), job: 'https://jenkins-75d947864d-8g9vx/job/IBM_Project/job/DeployJavaWebApp/', maxConn: 1, parameters: 'A=B', remoteJenkinsName: 'ThisJenkinsServer', useCrumbCache: true, useJobInfoCache: true
