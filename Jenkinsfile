@@ -89,7 +89,7 @@ spec:
 stage('Triggering a remote Job') {
   def job
     echo "Triggering a remote Job"
-    build job:'DeployJavaWebApp1'
+    build job:'DeployJavaWebApp/master'
   }
 
 
