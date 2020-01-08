@@ -151,7 +151,7 @@ stage('Triggering a remote Job') {
     }
 
 
-//  Put Deploy to different repo / project
+/*  Put Deploy to different repo / project
 //
 // *** Helm Deploy
 //
@@ -172,7 +172,7 @@ stage('Triggering a remote Job') {
             stage('Deploy DEV release') {
                 echo "Every commit to master branch is a dev release"
                 echo "Deploy Dev release after commit to master"
-                deployHelm("javawebapp-dev2","dev",tagDockerImage) // tagDockerImage <==> env.BRANCH_NAME
+                deployHelm("javawebapp-dev2","dev",tagDockerImage)
             }
         }
         else if ( isBuildingTag() ){
@@ -182,9 +182,27 @@ stage('Triggering a remote Job') {
                 deployHelm( "javawebapp-qa2","qa",env.BRANCH_NAME )
             }
         }
-//
+*/
+    def job // check if it is needed
+    stage('Triggering Deploymant Job') {
+  // do not deploy when 'push to branch' (and PR)
+          if ( isPushtoFeatureBranch() ) {
+                  // exitAsSuccess()
+                  return 0
+          }
+          // no PROD release here
+
+          // Dev - trigger Deploy repo with Parameters: tag = ShortCommit
+          if ( isMaster() ) {
+                  echo "Triggering DEPLOY repo with Parameters: tag = ShortCommit"
+                  build job:'IBM_Project/DeployJavaWebApp/master', parameters: [[$class: 'StringParameterValue', name: 'tagDockerImage', value: tagDockerImage]] 
+          }
 
 
+
+          // QA - trigger Deploy repo with Parameters: tag = git tag
+
+    }
 
     } // node
   } //podTemplate
@@ -247,7 +265,7 @@ stage('Triggering a remote Job') {
 //  Put Deploy to different repo / project
 //
 // Deployment function
-//
+/*
 // name = javawebapp
 // ns = dev/qa/prod
 // tag = image's tag
@@ -271,4 +289,4 @@ stage('Triggering a remote Job') {
     }
   }
 
-//
+*/
