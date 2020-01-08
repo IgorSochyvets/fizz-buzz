@@ -91,7 +91,7 @@ stage('Triggering a remote Job') {
     echo "Triggering a remote Job"
     echo "hello ${env.WORKSPACE}"
     sh "ls ${env.WORKSPACE}"
-    build job:'DeployJavaWebApp'
+    build job:'DeployJavaWebApp1'
   }
 
 
