@@ -213,6 +213,7 @@ stage('Triggering a remote Job') {
 
   def isChangeSet() {
 
+/* new version - need testing
     currentBuild.changeSets.any { changeSet ->
           changeSet.items.any { entry ->
             entry.affectedFiles.any { file ->
@@ -223,7 +224,8 @@ stage('Triggering a remote Job') {
           }
         }
 
-/* old version
+*/
+// old version
       def changeLogSets = currentBuild.changeSets
              for (int i = 0; i < changeLogSets.size(); i++) {
              def entries = changeLogSets[i].items
@@ -237,7 +239,7 @@ stage('Triggering a remote Job') {
                  }
               }
       }
-*/
+//
       return false
   }
 
