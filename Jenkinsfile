@@ -89,8 +89,6 @@ spec:
 stage('Triggering a remote Job') {
   def job
     echo "Triggering a remote Job"
-    echo "hello ${env.WORKSPACE}"
-    sh "ls ${env.WORKSPACE}"
     build job:'DeployJavaWebApp1'
   }
 
