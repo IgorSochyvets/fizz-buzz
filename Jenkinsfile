@@ -196,7 +196,7 @@ stage('Triggering a remote Job') {
           if ( isMaster() ) {
                   echo "Triggering DEPLOY repo with Parameters: tag = ShortCommit"
                   build job:'IBM_Project/DeployJavaWebApp/master',
-                  parameters: [string(name: 'DEPLOY_TAG', value: env.GIT_COMMIT)]
+                  parameters: [string(name: 'DEPLOY_TAG', value: env.BRANCH_NAME)]
           }
 
 // ${SHORT_COMMIT}
