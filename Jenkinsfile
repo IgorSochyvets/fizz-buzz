@@ -199,12 +199,13 @@ stage('Triggering a remote Job') {
                   echo "Triggering DEPLOY repo for DEV release with Parameters: master "
                   echo "SHOW ${tagDockerImage}"
                   build job:'IBM_Project/DeployJavaWebApp/master',
-                  parameters: [string(name: 'DEPLOY_TAG', value: SHORT_COMMIT)]
+                  parameters: [string(name: 'DEPLOY_TAG', value: SHORT_COMMIT),string(name:'BRANCHNAME',value:env.BRANCH_NAME)]
+
           }
           else if ( isBuildingTag() ){
                   echo "Triggering DEPLOY repo for QA release with Parameters: tag "
                   build job:'IBM_Project/DeployJavaWebApp/master',
-                  parameters: [string(name: 'DEPLOY_TAG', value: env.BRANCH_NAME)] // passed "tag" value
+                  parameters: [string(name: 'DEPLOY_TAG', value: SHORT_COMMIT),string(name:'BRANCHNAME',value:env.BRANCH_NAME)] // passed "tag" value
           }
 
     }
