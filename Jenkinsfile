@@ -196,8 +196,9 @@ stage('Triggering a remote Job') {
           // QA - trigger Deploy repo with Parameters: tag
           if ( isMaster() )  {
                   echo "Triggering DEPLOY repo for DEV release with Parameters: master "
+                  echo "SHOW ${tagDockerImage}"
                   build job:'IBM_Project/DeployJavaWebApp/master',
-                  parameters: [string(name: 'DEPLOY_TAG', value: env.BRANCH_NAME)] // passed "master" value
+                  parameters: [string(name: 'DEPLOY_TAG', value: 'tagDockerImage')] // passed "master" value
           }
           else if ( isBuildingTag() ){
                   echo "Triggering DEPLOY repo for QA release with Parameters: tag "
