@@ -198,7 +198,8 @@ stage('Triggering a remote Job') {
                   echo "Triggering DEPLOY repo for DEV release with Parameters: master "
                   echo "SHOW ${tagDockerImage}"
                   build job:'IBM_Project/DeployJavaWebApp/master',
-                  parameters: [string(name: 'DEPLOY_TAG', value: 'tagDockerImage')] // passed "master" value
+                  parameters: [[$class: 'StringParameterValue', name: 'DEPLOY_TAG', value: target],
+                  [$class: 'ListSubversionTagsParameterValue', name: 'RELEASE', tag: release]]
           }
           else if ( isBuildingTag() ){
                   echo "Triggering DEPLOY repo for QA release with Parameters: tag "
