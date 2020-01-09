@@ -199,7 +199,7 @@ stage('Triggering a remote Job') {
                   parameters: [string(name: 'DEPLOY_TAG', value: env.GIT_COMMIT)]
           }
 
-#${SHORT_COMMIT}
+// ${SHORT_COMMIT}
 
           // QA - trigger Deploy repo with Parameters: tag = git tag
 
