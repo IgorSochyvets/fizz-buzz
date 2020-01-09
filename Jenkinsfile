@@ -200,6 +200,7 @@ stage('Triggering a remote Job') {
           }
           else if ( isBuildingTag() ){
                   echo "Triggering DEPLOY repo for QA release with Parameters: tag "
+                  build job:'IBM_Project/DeployJavaWebApp/master',
                   parameters: [string(name: 'DEPLOY_TAG', value: env.BRANCH_NAME)] // passed "tag" value
           }
 
