@@ -193,13 +193,16 @@ stage('Triggering a remote Job') {
           // no PROD release here
 
           // Dev - trigger Deploy repo with Parameters: tag = ShortCommit
-          if ( isMaster() ) {
-                  echo "Triggering DEPLOY repo with Parameters: tag = ShortCommit"
+          if ( isMaster() )  {
+                  echo "Triggering DEPLOY repo for DEV release with Parameters: master "
                   build job:'IBM_Project/DeployJavaWebApp/master',
-                  parameters: [string(name: 'DEPLOY_TAG', value: env.BRANCH_NAME)]
+                  parameters: [string(name: 'DEPLOY_TAG', value: env.BRANCH_NAME)] // passed "master" value
+          }
+          else if ( isBuildingTag() ){
+                  echo "Triggering DEPLOY repo for QA release with Parameters: tag "
+                  parameters: [string(name: 'DEPLOY_TAG', value: env.BRANCH_NAME)] // passed "tag" value
           }
 
-// ${SHORT_COMMIT}
 
           // QA - trigger Deploy repo with Parameters: tag = git tag
 
