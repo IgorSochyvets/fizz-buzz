@@ -71,13 +71,12 @@ spec:
 //
 // *** Test and build Java Web App
 //
-/*
       stage('Unit Tests') {
         container('maven') {
           sh "mvn test"
           }
         }
-*/
+
       stage('Building Application') {
         container('maven') {
           sh "mvn install"
