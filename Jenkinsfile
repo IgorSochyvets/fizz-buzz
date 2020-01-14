@@ -83,19 +83,6 @@ spec:
           }
         }
 
-
-/* working / tested
-//// TMP triggering a remote Job
-stage('Triggering a remote Job') {
-  def job
-    echo "Triggering a remote Job"
-    echo "From Folder"
-    build job:'IBM_Project/DeployJavaWebApp/master'
-  }
-*/
-
-
-
 //
 // *** Docker Image Building
 //
@@ -198,13 +185,13 @@ stage('Triggering a remote Job') {
                   echo "Triggering DEPLOY repo for DEV release with Parameters: master "
                   echo "SHOW ${tagDockerImage}"
                   build job:'IBM_Project/DeployJavaWebApp/master',
-                  parameters: [string(name: 'DEPLOY_TAG', value: SHORT_COMMIT),string(name:'BRANCHNAME',value:env.BRANCH_NAME)]
+                  parameters: [string(name: 'deployTag', value: SHORT_COMMIT),string(name:'BRANCHNAME',value:env.BRANCH_NAME)]
 
           }
           else if ( isBuildingTag() ){
                   echo "Triggering DEPLOY repo for QA release with Parameters: tag "
                   build job:'IBM_Project/DeployJavaWebApp/master',
-                  parameters: [string(name: 'DEPLOY_TAG', value: SHORT_COMMIT),string(name:'BRANCHNAME',value:env.BRANCH_NAME)] // passed "tag" value
+                  parameters: [string(name: 'deployTag', value: SHORT_COMMIT),string(name:'BRANCHNAME',value:env.BRANCH_NAME)]
           }
 
     }
@@ -265,33 +252,3 @@ stage('Triggering a remote Job') {
 //
       return false
   }
-
-
-//  Put Deploy to different repo / project
-//
-// Deployment function
-/*
-// name = javawebapp
-// ns = dev/qa/prod
-// tag = image's tag
-  def deployHelm(name, ns, tag) {
-     container('helm') {
-        withKubeConfig([credentialsId: 'kubeconfig']) {
-        sh """
-            echo "Deployments is starting..."
-            helm upgrade --install $name --debug ./javawebapp-chart \
-            --force \
-            --wait \
-            --namespace $ns \
-            --set image.repository=$DOCKERHUB_USER/$DOCKERHUB_IMAGE \
-            --set-string ingress.hosts[0].host=${name}.ddns.net \
-            --set-string ingress.tls[0].hosts[0]=${name}.ddns.net \
-            --set-string ingress.tls[0].secretName=acme-${name}-tls \
-            --set image.tag=$tag
-            helm ls
-        """
-        }
-    }
-  }
-
-*/
