@@ -58,7 +58,6 @@ spec:
     node(label) {
 
       def tagDockerImage
-      def nameStage
 
       stage('Checkout SCM') {
         checkout scm
@@ -129,7 +128,7 @@ spec:
           else {
             withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
               sh 'docker image ls'
-              sh "docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${tagDockerImage}" // ${tagDockerImage}<==>${BRANCH_NAME}
+              sh "docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${tagDockerImage}"
             }
           }
         }
@@ -138,7 +137,7 @@ spec:
 
 
     def job
-    stage('Triggering Deploymant Job') {
+    stage('Triggering Deployment Job') {
   // do not deploy when 'push to branch' (and PR)
           if ( isPushtoFeatureBranch() ) {
                   // exitAsSuccess()
