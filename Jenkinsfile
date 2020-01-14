@@ -137,39 +137,7 @@ spec:
     }
 
 
-/*  Put Deploy to different repo / project
-//
-// *** Helm Deploy
-//
-// do not deploy when 'push to branch' (and PR)
-        if ( isPushtoFeatureBranch() ) {
-                // exitAsSuccess()
-                return 0
-        }
-        if ( isChangeSet()  ) {
-            stage('Deploy PROD release') {
-                echo "Production release controlled by a change to production-release.txt file in application repository root,"
-                echo "containing a git tag that should be released to production environment"
-                tagDockerImage = "${sh(script:'cat production-release.txt',returnStdout: true)}"
-                deployHelm("javawebapp-prod2","prod",tagDockerImage)
-            }
-        }
-        else if ( isMaster() ) {
-            stage('Deploy DEV release') {
-                echo "Every commit to master branch is a dev release"
-                echo "Deploy Dev release after commit to master"
-                deployHelm("javawebapp-dev2","dev",tagDockerImage)
-            }
-        }
-        else if ( isBuildingTag() ){
-// add check if it master
-            stage('Deploy QA release') {
-                echo "Every git tag on a master branch is a QA release"
-                deployHelm( "javawebapp-qa2","qa",env.BRANCH_NAME )
-            }
-        }
-*/
-    def job // check if it is needed
+    def job
     stage('Triggering Deploymant Job') {
   // do not deploy when 'push to branch' (and PR)
           if ( isPushtoFeatureBranch() ) {
@@ -200,11 +168,7 @@ spec:
   } //podTemplate
 
 
-//
 // *** Functions
-//
-
-  // is it push to Master branch?
   def isMaster() {
       return (env.BRANCH_NAME == "master" )
   }
@@ -214,7 +178,7 @@ spec:
   }
 
   def isBuildingTag() {
-      return ( env.BRANCH_NAME ==~ /^\d.\d.\d$/ )
+      return ( env.BRANCH_NAME ==~ /^\d+.\d+.\d+$/ )
   }
 
   def isPushtoFeatureBranch() {
