@@ -1,10 +1,9 @@
 image:
   repository: kongurua/fizz-buzz
-  tag: 2.2.5
 ingress:
   hosts:
-  - host: javawebapp-prod2.ddns.net
+  - host: javawebapp-dev2.ddns.net
   tls:
   - hosts:
-    - javawebapp-prod2.ddns.net
-    secretName: acme-javawebapp-prod2-tls
+    - javawebapp-dev2.ddns.net
+    secretName: acme-javawebapp-dev2-tls
