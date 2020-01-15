@@ -1,5 +1,9 @@
 #!/usr/bin/env groovy
 
+import org.jenkinsci.plugins.pipeline.modeldefinition.Utils
+// Utils.markStageSkippedForConditional('stageName')
+
+
 env.DOCKERHUB_IMAGE = 'fizz-buzz'
 env.DOCKERHUB_USER = 'kongurua'
 
