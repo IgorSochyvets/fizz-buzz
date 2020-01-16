@@ -146,13 +146,13 @@ node(label) {
                   echo "Triggering DEPLOY repo for DEV release with Parameters: master "
                   echo "SHOW ${tagDockerImage}"
                   build job:'IBM_Project/DeployJavaWebApp/master',
-                  parameters: [string(name: 'deployTag', value: SHORT_COMMIT),string(name:'BRANCHNAME',value:env.BRANCH_NAME)], wait: false, propagate: false
+                  parameters: [string(name: 'deployTag', value: SHORT_COMMIT)], wait: false, propagate: false
 
           }
           else if ( isBuildingTag() ){
                   echo "Triggering DEPLOY repo for QA release with Parameters: tag "
                   build job:'IBM_Project/DeployJavaWebApp/master',
-                  parameters: [string(name: 'deployTag', value: SHORT_COMMIT),string(name:'BRANCHNAME',value:env.BRANCH_NAME)], wait: false, propagate: false
+                  parameters: [string(name: 'deployTag', value: env.BRANCH_NAME)], wait: false, propagate: false
           }
 
   }
