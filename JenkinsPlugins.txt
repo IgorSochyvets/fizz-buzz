@@ -17,6 +17,7 @@
 
 
 ### what are installed
+ThinBackup # to backup Jenkins data configuration 
 Pipeline Utility Steps  # working with files
 Parameterized Trigger  ## to pass parameters from one job to another ### do we not need it??
 Parameterized Remote Trigger (3.1.0)### for triggering remote job ### do we not need it??
