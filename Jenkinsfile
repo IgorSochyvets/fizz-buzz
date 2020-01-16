@@ -1,9 +1,5 @@
 #!/usr/bin/env groovy
 
-import org.jenkinsci.plugins.pipeline.modeldefinition.Utils
-// Utils.markStageSkippedForConditional('stageName')
-
-
 env.DOCKERHUB_IMAGE = 'fizz-buzz'
 env.DOCKERHUB_USER = 'kongurua'
 
@@ -59,32 +55,32 @@ spec:
 """
   ){
 
-    node(label) {
+node(label) {
 
-      def tagDockerImage
+  def tagDockerImage
 
-      stage('Checkout SCM') {
-        checkout scm
-        sh 'git rev-parse HEAD | cut -b 1-7 > GIT_COMMIT_SHORT'
-        SHORT_COMMIT = readFile('GIT_COMMIT_SHORT')
-        echo "Short Commit: ${SHORT_COMMIT}"
-      }
+  stage('Checkout SCM') {
+    checkout scm
+    sh 'git rev-parse HEAD | cut -b 1-7 > GIT_COMMIT_SHORT'
+    SHORT_COMMIT = readFile('GIT_COMMIT_SHORT')
+    echo "Short Commit: ${SHORT_COMMIT}"
+  }
 
 
 //
 // *** Test and build Java Web App
 //
-      stage('Unit Tests') {
-        container('maven') {
-          sh "mvn test"
-          }
-        }
+  stage('Unit Tests') {
+    container('maven') {
+    sh "mvn test"
+    }
+  }
 
-      stage('Building Application') {
-        container('maven') {
-          sh "mvn install"
-          }
-        }
+  stage('Building Application') {
+    container('maven') {
+    sh "mvn install"
+    }
+  }
 
 //
 // *** Docker Image Building
@@ -96,7 +92,7 @@ spec:
         // BRANCH_NAME = v0.0.1  - git tag       / It is QA release  / tag=short_commit (the same image from dev release)
         // change file to mark prod release      /It is PROD release / tag=short_commit
         // do docker buils for all cases except "prod" release = !isChangeset
-    stage('Docker build') {
+  stage('Docker build') {
     container('docker') {
       if  ( !isChangeSet() ) {
         if ( isMaster() ) {
@@ -105,7 +101,7 @@ spec:
         }
         else {
           tagDockerImage = "${BRANCH_NAME}"
-          echo  "From Branch ${tagDockerImage}" //testing
+          echo  "From Branch ${tagDockerImage}"
         }
 // if master then tagDockerImage = short_commit
 //else   tagDockerImage = branch_name
@@ -113,45 +109,39 @@ spec:
           echo "Create Docker image: ${DOCKERHUB_IMAGE}:${tagDockerImage}"
           sh "docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}"
           sh "docker build . -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${tagDockerImage}"
-      }
+        }
       }
     }
-    }
+  }
 
 //
 // *** Docker Image Push
 //
 // push docker image for all other cases (except PR & Prod)
-    stage ('Docker push') {
-      container('docker') {
-        if  ( !isChangeSet() ) {
-          if ( isPullRequest() ) {
-            // exitAsSuccess()
-            return 0
-          }
-          else {
-            withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-              sh 'docker image ls'
-              sh "docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${tagDockerImage}"
-            }
+  stage ('Docker push') {
+    container('docker') {
+      if  ( !isChangeSet() ) {
+        if ( isPullRequest() ) {
+          return 0
+        }
+        else {
+          withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+            sh 'docker image ls'
+            sh "docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${tagDockerImage}"
           }
         }
       }
     }
+  }
 
 
     def job
-    stage('Triggering Deployment Job') {
+  stage('Triggering Deployment Job') {
   // do not deploy when 'push to branch' (and PR)
-          if ( isPushtoFeatureBranch() ) {
-                  // exitAsSuccess()
-                  return 0
-          }
-          // no PROD release here
-
-          // Dev - trigger Deploy repo with Parameters: master
-          // QA - trigger Deploy repo with Parameters: tag
-
+    if ( isPushtoFeatureBranch() ) {
+      return 0
+    }
+    // Using One Parameter for Dev and QA / short_commit for Dev and tag for QA - trigger Deploy repo with Parameters: master
           if ( isMaster() )  {
                   echo "Triggering DEPLOY repo for DEV release with Parameters: master "
                   echo "SHOW ${tagDockerImage}"
@@ -165,7 +155,7 @@ spec:
                   parameters: [string(name: 'deployTag', value: SHORT_COMMIT),string(name:'BRANCHNAME',value:env.BRANCH_NAME)], wait: false, propagate: false
           }
 
-    }
+  }
 
     } // node
   } //podTemplate
