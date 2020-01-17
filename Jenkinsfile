@@ -64,7 +64,8 @@ node(label) {
     sh 'git rev-parse HEAD | cut -b 1-7 > GIT_COMMIT_SHORT'
     tagDockerImage = readFile('GIT_COMMIT_SHORT')
     echo "Short Commit: ${tagDockerImage}"
-    tagDockerImage1=$(git rev-parse HEAD | cut -b 1-7)
+    sh 'tagDockerImage1=$(git rev-parse HEAD | cut -b 1-7)'
+    sh 'echo $tagDockerImage1'
   }
 
 
