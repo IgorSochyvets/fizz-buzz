@@ -130,25 +130,19 @@ node(label) {
 
 /// ***  use one 'build job' instead of two
 //    def job
-  stage('TriggeringDeployment Job') {
+  stage('TriggerDeployJob') {
   // do not deploy when 'push to branch' (and PR)
-    if ( isPushtoFeatureBranch() ) {   // USE !isPushtoFeatureBranch()  without return 0
-      return 0
-    }
-    // Using One Parameter for Dev and QA / short_commit for Dev and tag for QA - trigger Deploy repo with Parameters: master
+    if ( !isPushtoFeatureBranch() ) {
           if ( isMaster() )  {
-                  echo "Triggering DEPLOY repo for DEV release with Parameters: master "
-                  echo "SHOW ${tagDockerImage}"
                   build job:'IBM_Project/DeployJavaWebApp/master',
                   parameters: [string(name: 'deployTag', value: tagDockerImage)], wait: false, propagate: false   // check if it default!!!
-
           }
           else if ( isBuildingTag() ){
-                  echo "Triggering DEPLOY repo for QA release with Parameters: tag "
                   build job:'IBM_Project/DeployJavaWebApp/master',
                   parameters: [string(name: 'deployTag', value: env.BRANCH_NAME)], wait: false, propagate: false // check if it default!!!
           }
-
+    }
+    else Utils.markStageSkippedForConditional('TriggerDeployJob')
   }
 
     } // node
