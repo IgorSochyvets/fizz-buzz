@@ -133,13 +133,9 @@ node(label) {
   stage('TriggerDeployJob') {
   // do not deploy when 'push to branch' (and PR)
     if ( !isPushtoFeatureBranch() ) {
-          if ( isMaster() )  {
+          if ( isMaster() || isBuildingTag() )  {
                   build job:'IBM_Project/DeployJavaWebApp/master',
-                  parameters: [string(name: 'deployTag', value: tagDockerImage)], wait: false, propagate: false   // check if it default!!!
-          }
-          else if ( isBuildingTag() ){
-                  build job:'IBM_Project/DeployJavaWebApp/master',
-                  parameters: [string(name: 'deployTag', value: env.BRANCH_NAME)], wait: false, propagate: false // check if it default!!!
+                  parameters: [string(name: 'deployTag', value: tagDockerImage)], propagate: false   // check if it default!!!
           }
     }
     else Utils.markStageSkippedForConditional('TriggerDeployJob')
