@@ -95,7 +95,6 @@ node(label) {
     container('docker') {
       if  ( !isChangeSet() ) { // to dell IT !!!!! it is from DEPLOY
         if ( isMaster() ) {
-          tagDockerImage = readFile('GIT_COMMIT_SHORT')
           echo  "From Short ${tagDockerImage}" //use short commit for master
         }
         else {
@@ -145,7 +144,7 @@ node(label) {
                   echo "Triggering DEPLOY repo for DEV release with Parameters: master "
                   echo "SHOW ${tagDockerImage}"
                   build job:'IBM_Project/DeployJavaWebApp/master',
-                  parameters: [string(name: 'deployTag', value: SHORT_COMMIT)], wait: false, propagate: false
+                  parameters: [string(name: 'deployTag', value: ${tagDockerImage})], wait: false, propagate: false
 
           }
           else if ( isBuildingTag() ){
