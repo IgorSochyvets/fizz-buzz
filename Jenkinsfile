@@ -58,12 +58,13 @@ spec:
 node(label) {
 
   def tagDockerImage
-
+///***   !!! read sh st out   to variables use only tagDockerImage
   stage('Checkout SCM') {
     checkout scm
     sh 'git rev-parse HEAD | cut -b 1-7 > GIT_COMMIT_SHORT'
-    SHORT_COMMIT = readFile('GIT_COMMIT_SHORT')
-    echo "Short Commit: ${SHORT_COMMIT}"
+    tagDockerImage = readFile('GIT_COMMIT_SHORT')
+    echo "Short Commit: ${tagDockerImage}"
+    tagDockerImage1=$(git rev-parse HEAD | cut -b 1-7)
   }
 
 
@@ -94,7 +95,7 @@ node(label) {
         // do docker buils for all cases except "prod" release = !isChangeset
   stage('Docker build') {
     container('docker') {
-      if  ( !isChangeSet() ) {
+      if  ( !isChangeSet() ) { // to dell IT !!!!! it is from DEPLOY
         if ( isMaster() ) {
           tagDockerImage = readFile('GIT_COMMIT_SHORT')
           echo  "From Short ${tagDockerImage}" //use short commit for master
@@ -120,8 +121,8 @@ node(label) {
 // push docker image for all other cases (except PR & Prod)
   stage ('Docker push') {
     container('docker') {
-      if  ( !isChangeSet() ) {
-        if ( isPullRequest() ) {
+      if  ( !isChangeSet() ) {    // to dell IT !!!!! it is from DEPLOY
+        if ( isPullRequest() ) {   // USE !isPullRequest()  without return 0
           return 0
         }
         else {
@@ -134,11 +135,11 @@ node(label) {
     }
   }
 
-
-    def job
+/// ***  use one 'build job' instead of two
+//    def job
   stage('Triggering Deployment Job') {
   // do not deploy when 'push to branch' (and PR)
-    if ( isPushtoFeatureBranch() ) {
+    if ( isPushtoFeatureBranch() ) {   // USE !isPushtoFeatureBranch()  without return 0
       return 0
     }
     // Using One Parameter for Dev and QA / short_commit for Dev and tag for QA - trigger Deploy repo with Parameters: master
@@ -171,13 +172,16 @@ node(label) {
   }
 
   def isBuildingTag() {
-      return ( env.BRANCH_NAME ==~ /^\d+.\d+.\d+$/ )
+      return ( env.BRANCH_NAME ==~ /^\d+.\d+.\d+$/ )   //// add \.
   }
 
   def isPushtoFeatureBranch() {
       return ( ! isMaster() && ! isBuildingTag() && ! isPullRequest() )
   }
 
+
+
+/// *** delete it / it is from Deploy
   def isChangeSet() {
 
 /* new version - need testing
