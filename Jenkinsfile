@@ -144,7 +144,7 @@ node(label) {
                   echo "Triggering DEPLOY repo for DEV release with Parameters: master "
                   echo "SHOW ${tagDockerImage}"
                   build job:'IBM_Project/DeployJavaWebApp/master',
-                  parameters: [string(name: 'deployTag', value: ${tagDockerImage})], wait: false, propagate: false
+                  parameters: [string(name: 'deployTag', value: tagDockerImage)], wait: false, propagate: false
 
           }
           else if ( isBuildingTag() ){
