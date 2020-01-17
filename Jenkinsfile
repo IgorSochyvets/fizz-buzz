@@ -93,7 +93,6 @@ node(label) {
         // do docker buils for all cases except "prod" release = !isChangeset
   stage('Docker build') {
     container('docker') {
-      if  ( !isChangeSet() ) { // to dell IT !!!!! it is from DEPLOY
         if ( isMaster() ) {
           echo  "From Short ${tagDockerImage}" //use short commit for master
         }
@@ -108,7 +107,6 @@ node(label) {
           sh "docker login --username ${DOCKER_USER} --password ${DOCKER_PASSWORD}"
           sh "docker build . -t ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${tagDockerImage}"
         }
-      }
     }
   }
 
@@ -118,7 +116,6 @@ node(label) {
 // push docker image for all other cases (except PR & Prod)
   stage ('Docker push') {
     container('docker') {
-      if  ( !isChangeSet() ) {    // to dell IT !!!!! it is from DEPLOY
         if ( isPullRequest() ) {   // USE !isPullRequest()  without return 0
           return 0
         }
@@ -128,7 +125,6 @@ node(label) {
             sh "docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${tagDockerImage}"
           }
         }
-      }
     }
   }
 
@@ -144,13 +140,13 @@ node(label) {
                   echo "Triggering DEPLOY repo for DEV release with Parameters: master "
                   echo "SHOW ${tagDockerImage}"
                   build job:'IBM_Project/DeployJavaWebApp/master',
-                  parameters: [string(name: 'deployTag', value: tagDockerImage)], wait: false, propagate: false
+                  parameters: [string(name: 'deployTag', value: tagDockerImage)], wait: false, propagate: false   // check if it default!!!
 
           }
           else if ( isBuildingTag() ){
                   echo "Triggering DEPLOY repo for QA release with Parameters: tag "
                   build job:'IBM_Project/DeployJavaWebApp/master',
-                  parameters: [string(name: 'deployTag', value: env.BRANCH_NAME)], wait: false, propagate: false
+                  parameters: [string(name: 'deployTag', value: env.BRANCH_NAME)], wait: false, propagate: false // check if it default!!!
           }
 
   }
@@ -174,39 +170,4 @@ node(label) {
 
   def isPushtoFeatureBranch() {
       return ( ! isMaster() && ! isBuildingTag() && ! isPullRequest() )
-  }
-
-
-
-/// *** delete it / it is from Deploy
-  def isChangeSet() {
-
-/* new version - need testing
-    currentBuild.changeSets.any { changeSet ->
-          changeSet.items.any { entry ->
-            entry.affectedFiles.any { file ->
-              if (file.path.equals("production-release.txt")) {
-                return true
-              }
-            }
-          }
-        }
-
-*/
-// old version
-      def changeLogSets = currentBuild.changeSets
-             for (int i = 0; i < changeLogSets.size(); i++) {
-             def entries = changeLogSets[i].items
-             for (int j = 0; j < entries.length; j++) {
-                 def files = new ArrayList(entries[j].affectedFiles)
-                 for (int k = 0; k < files.size(); k++) {
-                     def file = files[k]
-                     if (file.path.equals("production-release.txt")) {
-                         return true
-                     }
-                 }
-              }
-      }
-//
-      return false
   }
