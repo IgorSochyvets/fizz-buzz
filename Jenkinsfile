@@ -58,14 +58,11 @@ spec:
 node(label) {
 
   def tagDockerImage
-///***   !!! read sh st out   to variables use only tagDockerImage
+
   stage('Checkout SCM') {
     checkout scm
-    sh 'git rev-parse HEAD | cut -b 1-7 > GIT_COMMIT_SHORT'
-    tagDockerImage = readFile('GIT_COMMIT_SHORT')
+    tagDockerImage = sh(returnStdout: true, script: "git rev-parse HEAD").trim().take(7)
     echo "Short Commit: ${tagDockerImage}"
-    sh 'tagDockerImage1=$(git rev-parse HEAD | cut -b 1-7)'
-    sh 'echo $tagDockerImage1'
   }
 
 
