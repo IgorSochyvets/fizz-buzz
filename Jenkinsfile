@@ -1,5 +1,7 @@
 #!/usr/bin/env groovy
 
+import org.jenkinsci.plugins.pipeline.modeldefinition.Utils
+
 env.DOCKERHUB_IMAGE = 'fizz-buzz'
 env.DOCKERHUB_USER = 'kongurua'
 
@@ -114,23 +116,21 @@ node(label) {
 // *** Docker Image Push
 //
 // push docker image for all other cases (except PR & Prod)
-  stage ('Docker push') {
+  stage ('DockerPush') {
     container('docker') {
-        if ( isPullRequest() ) {   // USE !isPullRequest()  without return 0
-          return 0
-        }
-        else {
+        if ( !isPullRequest() ) {
           withCredentials([usernamePassword(credentialsId: 'docker_hub_login', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
             sh 'docker image ls'
             sh "docker push ${DOCKERHUB_USER}/${DOCKERHUB_IMAGE}:${tagDockerImage}"
           }
         }
+        else Utils.markStageSkippedForConditional('DockerPush')
     }
   }
 
 /// ***  use one 'build job' instead of two
 //    def job
-  stage('Triggering Deployment Job') {
+  stage('TriggeringDeployment Job') {
   // do not deploy when 'push to branch' (and PR)
     if ( isPushtoFeatureBranch() ) {   // USE !isPushtoFeatureBranch()  without return 0
       return 0
