@@ -135,7 +135,7 @@ node(label) {
     if ( !isPushtoFeatureBranch() ) {
           if ( isMaster() || isBuildingTag() )  {
                   build job:'IBM_Project/DeployJavaWebApp/master',
-                  parameters: [string(name: 'deployTag', value: tagDockerImage)], wait: false, propagate: false // deault values - true (enabled); wait - to wait for completion of downstream job ; propagate - extend current view with stages from downstream job
+                  parameters: [string(name: 'deployTag', value: tagDockerImage)], wait: false // propagate: false  deault values - true (enabled); wait - to wait for completion of downstream job ; propagate - extend current view with stages from downstream job
           }
     }
     else Utils.markStageSkippedForConditional('TriggerDeployJob')
