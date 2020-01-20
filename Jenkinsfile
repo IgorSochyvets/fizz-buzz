@@ -139,6 +139,7 @@ node(label) {
     }
     else Utils.markStageSkippedForConditional('TriggerDeployJob')
   }
+}
 
     } // node
   } //podTemplate
