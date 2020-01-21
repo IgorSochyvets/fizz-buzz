@@ -61,7 +61,7 @@ node(label) {
 
   def tagDockerImage
 
-  stage('Checkout SCM') {
+  stage('CheckoutSCM') {
     checkout scm
     tagDockerImage = sh(returnStdout: true, script: "git rev-parse HEAD").trim().take(7)
     echo "Short Commit: ${tagDockerImage}"
@@ -71,13 +71,13 @@ node(label) {
 //
 // *** Test and build Java Web App
 //
-  stage('Unit Tests') {
+  stage('UnitTests') {
     container('maven') {
     sh "mvn test"
     }
   }
 
-  stage('Building Application') {
+  stage('BuildingApp') {
     container('maven') {
     sh "mvn install"
     }
@@ -93,7 +93,7 @@ node(label) {
         // BRANCH_NAME = v0.0.1  - git tag       / It is QA release  / tag=short_commit (the same image from dev release)
         // change file to mark prod release      /It is PROD release / tag=short_commit
         // do docker buils for all cases except "prod" release = !isChangeset
-  stage('Docker build') {
+  stage('DockerBuild') {
     container('docker') {
         if ( isMaster() ) {
           echo  "From Short ${tagDockerImage}" //use short commit for master
