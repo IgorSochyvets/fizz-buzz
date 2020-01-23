@@ -29,7 +29,7 @@ spec:
     - cat
     tty: true
   - name: maven
-    image: maven:3.6.3-jdk-13
+    image: maven:latest
     command:
     - cat
     tty: true
