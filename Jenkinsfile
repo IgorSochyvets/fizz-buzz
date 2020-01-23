@@ -73,14 +73,15 @@ node(label) {
 //
   stage('UnitTests') {
     container('maven') {
-    sh 'mvn test'
+    sh "mvn test"
     }
   }
 
   stage('BuildingApp') {
     container('maven') {
     sh 'ls target'
-    sh 'mvn install'
+    sh "mvn install"
+    sh 'ls target'
     }
   }
 
