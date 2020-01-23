@@ -79,7 +79,7 @@ node(label) {
 
   stage('BuildingApp') {
     container('maven') {
-    sh "mvn install"
+    sh "mvn clean deploy"
     }
   }
 
