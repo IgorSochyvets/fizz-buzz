@@ -67,7 +67,6 @@ node(label) {
     echo "Short Commit: ${tagDockerImage}"
   }
 
-
 //
 // *** Test and build Java Web App
 //
@@ -143,23 +142,23 @@ node(label) {
   }
 }
 
-    } // node
-  } //podTemplate
+} // node
+} //podTemplate
 
 
 // *** Functions
-  def isMaster() {
-      return (env.BRANCH_NAME == "master" )
-  }
+def isMaster() {
+  return (env.BRANCH_NAME == "master" )
+}
 
-  def isPullRequest() {
-      return (env.BRANCH_NAME ==~  /^PR-\d+$/)
-  }
+def isPullRequest() {
+  return (env.BRANCH_NAME ==~  /^PR-\d+$/)
+}
 
-  def isBuildingTag() {
-      return ( env.BRANCH_NAME ==~ /^\d+.\d+.\d+$/ )   //// add \.
-  }
+def isBuildingTag() {
+  return ( env.BRANCH_NAME ==~ /^\d+.\d+.\d+$/ )   //// add \.
+}
 
-  def isPushtoFeatureBranch() {
-      return ( ! isMaster() && ! isBuildingTag() && ! isPullRequest() )
-  }
+def isPushtoFeatureBranch() {
+  return ( ! isMaster() && ! isBuildingTag() && ! isPullRequest() )
+}
