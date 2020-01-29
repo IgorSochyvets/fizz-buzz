@@ -30,6 +30,8 @@ This is CI/CD project realized using Jenkins
 * test line 2
 * test line 3
 
+Docker dind creation:
+kubectl create -f docker-deployment.yaml -n jenkins
 
 # Demo
 
