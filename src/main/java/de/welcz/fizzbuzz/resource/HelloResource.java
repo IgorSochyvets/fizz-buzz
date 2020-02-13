@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/")
 public class HelloResource {
-    String var1 = "myString";
+    String envVarTag = "myString";
     @GetMapping
     public String hello() {
-        return "Hello Devops v.2.0.25;  Fizz-Buzz Game Path:  /api/v1/fizz-buzz/numbers/15" + var1;
+        return "Hello Devops v.2.0.26;  Fizz-Buzz Game Path:  /api/v1/fizz-buzz/numbers/15" + envVarTag;
     }
 }
