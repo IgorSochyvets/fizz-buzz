@@ -10,6 +10,6 @@ public class HelloResource {
     String envVarTag = "myString";
     @GetMapping
     public String hello() {
-        return "Hello Devops v.2.0.26;  Fizz-Buzz Game Path:  /api/v1/fizz-buzz/numbers/15" + envVarTag;
+        return "Hello Devops v.2.0.27;  Fizz-Buzz Game Path:  /api/v1/fizz-buzz/numbers/15" + envVarTag;
     }
 }
